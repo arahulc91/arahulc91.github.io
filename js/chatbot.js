@@ -1,27 +1,22 @@
-// Gemini API configuration
-const API_KEY = "";
-const API_URL =
-  "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent";
+const API_URL = "https://ai-chat-production-e92f.up.railway.app/chat";
 
 class Chatbot {
   constructor() {
-    this.messageHistory = [];
     this.initializeEventListeners();
     this.isProcessing = false;
     this.lastRequestTime = 0;
     this.minRequestInterval = 1000; // Minimum 1 second between requests
-    // Store the system prompt to avoid repeating it
-    this.systemPrompt = `
-      You are an AI assistant for Alvin Rahul Chauhan's portfolio website.
-      Start by introducing yourself. Pick a name from the Marvel universe. 
-      You should:
-      - Be funny and interactive
-      - Be knowledgeable about Alvin's background, skills, and experience
-      - Help visitors learn more about Alvin's work and capabilities
-      - Keep responses concise and relevant
-      - Maintain a helpful and informative tone
-      - If asked about technical details not present in the portfolio, be honest about not having that specific information
-    `;
+    this.sessionId = this.generateSessionId();
+  }
+
+  generateSessionId() {
+    // Generate a random string of 12 characters
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < 12; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
   }
 
   initializeEventListeners() {
@@ -120,84 +115,30 @@ class Chatbot {
   }
 
   async generateResponse(message) {
-    // Add the new message to history
-    this.messageHistory.push({
-      role: "user",
-      parts: [{ text: message }]
-    });
-
-    // Construct the conversation history with proper format
-    const contents = [{
-      role: "user",
-      parts: [{ text: this.systemPrompt }]
-    }];
-
-    // Add conversation history
-    for (const msg of this.messageHistory) {
-      contents.push({
-        role: msg.role,
-        parts: msg.parts
-      });
-    }
-
     const requestBody = {
-      contents,
-      generationConfig: {
-        temperature: 0.7,
-        topK: 40,
-        topP: 0.95,
-        maxOutputTokens: 1024,
-      },
-      safetySettings: [
-        {
-          category: "HARM_CATEGORY_HARASSMENT",
-          threshold: "BLOCK_MEDIUM_AND_ABOVE",
-        },
-        {
-          category: "HARM_CATEGORY_HATE_SPEECH",
-          threshold: "BLOCK_MEDIUM_AND_ABOVE",
-        },
-        {
-          category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-          threshold: "BLOCK_MEDIUM_AND_ABOVE",
-        },
-        {
-          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-          threshold: "BLOCK_MEDIUM_AND_ABOVE",
-        },
-      ],
+      message: message,
+      sessionId: this.sessionId
     };
 
     try {
-      const response = await fetch(`${API_URL}?key=${API_KEY}`, {
-        method: "POST",
+      const response = await fetch(API_URL, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(requestBody)
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('API Error:', errorData);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      // Check if we have a valid response
-      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-        throw new Error('Invalid response from Gemini API');
+      // Store the session ID from the response if it's different
+      if (data.sessionId && data.sessionId !== this.sessionId) {
+        this.sessionId = data.sessionId;
       }
-
-      const botResponse = data.candidates[0].content.parts[0].text;
-      
-      // Add bot response to history
-      this.messageHistory.push({
-        role: "model",
-        parts: [{ text: botResponse }]
-      });
-
-      return botResponse;
+      return data.response;
     } catch (error) {
       console.error('Full error:', error);
       throw error;
