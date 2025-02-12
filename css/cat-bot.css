@@ -1,0 +1,73 @@
+.bot-assistant {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  color: #4ade80;
+  cursor: pointer;
+  background: transparent;
+  padding: 15px;
+  z-index: 1000;
+  font-size: 3.5rem;
+  transition: transform 0.3s ease;
+  user-select: none;
+}
+
+.bot-assistant:hover {
+  transform: scale(1.05);
+}
+
+.bot-speech {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid #4ade80;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  display: none;
+  white-space: nowrap;
+  animation: fadeIn 0.3s ease;
+  font-size: 1rem;
+}
+
+.bot-speech::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  right: 20px;
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: #4ade80 transparent transparent;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+  .bot-assistant {
+    bottom: 10px;
+    right: 10px;
+    font-size: 3rem;
+    padding: 10px;
+  }
+
+  .bot-speech {
+    font-size: 0.875rem;
+    right: 0;
+    max-width: calc(100vw - 40px);
+    white-space: normal;
+  }
+}
+
+/* Small mobile devices */
+@media screen and (max-width: 480px) {
+  .bot-assistant {
+    font-size: 2.8rem;
+    padding: 8px;
+  }
+}

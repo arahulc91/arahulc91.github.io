@@ -1,0 +1,876 @@
+<!--
+Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Alvin Rahul Chauhan - Senior Software Engineer based in Fiji. Expertise in software development, system architecture, and technical leadership." />
+    <meta name="keywords" content="software engineer, developer, Fiji, Alvin Rahul Chauhan, technical leadership" />
+    <meta property="og:title" content="Alvin Rahul Chauhan - Software Engineer" />
+    <meta property="og:description" content="Senior Software Engineer based in Fiji" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Alvin Rahul Chauhan - Software Engineer" />
+    <title>Alvin Rahul Chauhan - Software Engineer</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- Load styles and scripts -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/cat-bot.css" />
+    <script src="js/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+    <script src="js/snake.js" defer></script>
+    <style>
+      /* Existing styles */
+      /* ... */
+      
+      /* Chatbot styles */
+      .chatbot-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 350px;
+        height: 500px;
+        background-color: rgba(0, 0, 0, 0.9);
+        border: 2px solid #39FF14;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        z-index: 1000;
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      /* Mobile styles */
+      @media (max-width: 768px) {
+        .chatbot-container {
+          width: calc(100% - 20px);
+          height: 60vh;
+          right: 10px;
+          bottom: 10px;
+          max-height: 500px;
+        }
+
+        .chat-input-container {
+          padding: 10px 5px;
+        }
+
+        #chat-input {
+          font-size: 16px; /* Prevent zoom on mobile */
+          padding: 12px 8px; /* Larger touch target */
+        }
+
+        #chat-submit {
+          padding: 12px 20px; /* Larger touch target */
+          font-size: 16px;
+        }
+      }
+
+      /* Small mobile devices */
+      @media (max-width: 380px) {
+        .chatbot-container {
+          width: calc(100% - 10px);
+          right: 5px;
+          bottom: 5px;
+        }
+      }
+
+      /* Landscape mode */
+      @media (max-height: 600px) and (orientation: landscape) {
+        .chatbot-container {
+          height: 80vh;
+        }
+      }
+
+      /* Toggle button for mobile */
+      .chatbot-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: rgba(0, 0, 0, 0.9);
+        border: 2px solid #39FF14;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 999;
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        font-size: 2.5rem; /* Increased emoji size */
+      }
+
+      @media (max-width: 768px) {
+        .chatbot-toggle {
+          display: flex;
+        }
+
+        .chatbot-container {
+          display: none;
+        }
+
+        .chatbot-container.active {
+          display: flex;
+        }
+      }
+
+      .chatbot-toggle i {
+        color: #39FF14;
+        font-size: 24px;
+      }
+
+      /* Rest of the existing chatbot styles */
+      .chat-header {
+        padding: 10px;
+        background-color: rgba(57, 255, 20, 0.1);
+        border-bottom: 1px solid #39FF14;
+        border-radius: 8px 8px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .chat-header .close-chat {
+        color: #39FF14;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 5px;
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .chat-header .close-chat {
+          display: block;
+        }
+      }
+
+      .chat-messages {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .chat-message {
+        max-width: 80%;
+        padding: 8px 12px;
+        border-radius: 15px;
+        margin: 5px 0;
+      }
+
+      .user-message {
+        align-self: flex-end;
+        background-color: rgba(57, 255, 20, 0.2);
+        border: 1px solid #39FF14;
+      }
+
+      .bot-message {
+        align-self: flex-start;
+        background-color: rgba(0, 0, 0, 0.8);
+        border: 1px solid #39FF14;
+      }
+
+      .chat-input-container {
+        padding: 10px;
+        border-top: 1px solid #39FF14;
+      }
+
+      #chat-form {
+        display: flex;
+        gap: 10px;
+      }
+
+      #chat-input {
+        flex-grow: 1;
+        background-color: rgba(0, 0, 0, 0.8);
+        border: 1px solid #39FF14;
+        color: #39FF14;
+        padding: 8px;
+        border-radius: 5px;
+      }
+
+      #chat-submit {
+        background-color: #39FF14;
+        color: black;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      #chat-submit:hover {
+        background-color: #2bff00;
+        box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+      }
+    </style>
+  </head>
+  <body class="bg-black text-green-400">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-black focus:text-green-400 z-50">Skip to main content</a>
+    <div class="custom-cursor" aria-hidden="true"></div>
+    <div class="loading-bar" aria-hidden="true"></div>
+    <div id="particles-js" aria-hidden="true"></div>
+    <!-- Game Overlay -->
+    <div id="game-overlay" class="fixed inset-0 bg-black bg-opacity-95 z-[60] hidden flex items-center justify-center">
+      <button id="close-game" class="game-close-btn absolute top-4 right-4 text-green-400 hover:text-green-300">&times;</button>
+      <canvas id="snake-canvas" class="border border-green-400"></canvas>
+    </div>
+    <main id="main">
+    <canvas id="matrix-rain" class="matrix-rain"></canvas>
+    <nav class="fixed top-0 w-full bg-black border-b border-green-500 z-50">
+      <div class="container mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+          <a href="#" class="text-xl font-bold typing-effect hover:text-green-300 transition-colors">Alvin Rahul Chauhan</a>
+          <div class="hidden md:flex space-x-6">
+            <a href="#about" class="hover:text-green-300 transition-colors">About</a>
+            <a href="#experience" class="hover:text-green-300 transition-colors">Experience</a>
+            <a href="#skills" class="hover:text-green-300 transition-colors">Skills</a>
+            <a href="#portfolio" class="hover:text-green-300 transition-colors">Portfolio</a>
+            <a href="#contact" class="hover:text-green-300 transition-colors">Contact</a>
+          </div>
+          <!-- Mobile menu button -->
+          <button class="md:hidden text-green-400 hover:text-green-300" id="mobile-menu-button">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+          </button>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+          <div class="px-2 pt-2 pb-3 space-y-1">
+            <a href="#about" class="block px-3 py-2 hover:text-green-300 transition-colors">About</a>
+            <a href="#experience" class="block px-3 py-2 hover:text-green-300 transition-colors">Experience</a>
+            <a href="#skills" class="block px-3 py-2 hover:text-green-300 transition-colors">Skills</a>
+            <a href="#portfolio" class="block px-3 py-2 hover:text-green-300 transition-colors">Portfolio</a>
+            <a href="#contact" class="block px-3 py-2 hover:text-green-300 transition-colors">Contact</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="pt-16 crt-effect">
+      <!-- Hero Section -->
+      <section
+        class="relative h-screen flex items-center justify-center bg-black"
+      >
+        <div id="particles-js"></div>
+        <div
+          class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center hero-content"
+        >
+          <h1
+            class="text-4xl sm:text-6xl font-bold text-green-400 mb-4 glitch-text"
+          >
+            > Senior Software Engineer_
+          </h1>
+          <p class="text-xl text-green-500 mb-8 font-mono terminal-text hero-subtitle">
+            {Full_Stack_Developer && AI_Enthusiast}
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              id="click-me-btn"
+              class="glitch-button"
+            >
+              <span>> Click_Me()</span>
+            </button>
+            <button
+              id="play-snake"
+              class="glitch-button"
+            >
+              <span>> Play_Snake()</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="py-12 sm:py-20 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl sm:text-3xl font-bold text-green-400 mb-4 sm:mb-8 hacking-animation">
+            > whoami
+          </h2>
+          <div class="code-block">
+            <pre class="code-typing">
+class SoftwareEngineer {
+    constructor() {
+        this.name = "Alvin Rahul Chauhan";
+        this.role = "Senior Software Engineer";
+        this.location = "Fiji";
+        this.interests = ["Coding", "Hacking", "Tinkering", "Gaming"];
+    }
+}</pre>
+          </div>
+          <div class="mt-8">
+            <p class="text-green-400 mb-4 terminal-text">
+              > Experienced software engineer with a passion for creating
+              innovative solutions
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Experience Section -->
+      <section id="experience" class="py-20 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-3xl font-bold text-green-400 mb-8">
+            > cat experience.log
+          </h2>
+          <div class="space-y-8">
+            <!-- Rupeni AI -->
+            <div class="terminal-window p-6">
+              <h3 class="text-xl font-semibold text-green-400">
+                root@rupeni-ai:~# Founder & AI Specialist
+              </h3>
+              <p class="text-green-500">2023 – Present</p>
+              <ul class="mt-4 space-y-2 text-green-400 list-none">
+                <li>
+                  > Created and deployed Rupeni, the first AI chatbot in Fiji
+                </li>
+                <li>> Integrated custom AI models using OpenAI and Gemini</li>
+                <li>> Managed end-to-end development with Docker</li>
+                <li>> Collaborated with major organizations in Fiji</li>
+              </ul>
+            </div>
+
+            <!-- Pacific Bedbank -->
+            <div class="terminal-window p-6">
+              <h3 class="text-xl font-semibold text-green-400">
+                root@pacific-bedbank:~# Senior Software Engineer
+              </h3>
+              <p class="text-green-500">2022 – Present</p>
+              <ul class="mt-4 space-y-2 text-green-400 list-none">
+                <li>> Lead full stack development with Go, React, HTMX</li>
+                <li>> Developed Vaizee Payment Gateway</li>
+                <li>> Launched Bedbank Plus platform</li>
+                <li>> Implemented CI/CD pipelines</li>
+              </ul>
+            </div>
+
+            <!-- Previous Experience -->
+            <div class="terminal-window p-6">
+              <h3 class="text-xl font-semibold text-green-400">
+                root@previous-roles:~# ls -la
+              </h3>
+              <ul class="mt-4 space-y-4 text-green-400">
+                <li>> Application Developer @ Punjas Fiji Limited (2021)</li>
+                <li>> Freelance Developer (2020)</li>
+                <li>> Application Developer @ Framesoft AG (2019)</li>
+                <li>> Application Developer @ Carpenters Fiji (2015 – 2017)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section id="skills" class="py-20 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <div class="terminal-dot"></div>
+                <div class="terminal-dot"></div>
+                <div class="terminal-dot"></div>
+              </div>
+            </div>
+            <div class="p-6">
+              <h2 class="text-3xl font-bold text-green-400 mb-8 flicker">
+                > ls -la skills/
+              </h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Development Languages -->
+                <div class="terminal-window p-6">
+                  <h3 class="text-lg font-semibold text-green-400 mb-4">
+                    > Languages
+                  </h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 skill-tag">Go</span>
+                    <span class="px-3 py-1 skill-tag">JavaScript</span>
+                    <span class="px-3 py-1 skill-tag">TypeScript</span>
+                    <span class="px-3 py-1 skill-tag">React</span>
+                    <span class="px-3 py-1 skill-tag">Flutter</span>
+                    <span class="px-3 py-1 skill-tag">Python</span>
+                  </div>
+                </div>
+
+                <!-- Database Systems -->
+                <div class="terminal-window p-6">
+                  <h3 class="text-lg font-semibold text-green-400 mb-4">
+                    > Databases
+                  </h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 skill-tag">PostgreSQL</span>
+                    <span class="px-3 py-1 skill-tag">MSSQL</span>
+                    <span class="px-3 py-1 skill-tag">MySQL</span>
+                    <span class="px-3 py-1 skill-tag">MongoDB</span>
+                  </div>
+                </div>
+
+                <!-- Cloud & Tools -->
+                <div class="terminal-window p-6">
+                  <h3 class="text-lg font-semibold text-green-400 mb-4">
+                    > DevOps
+                  </h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 skill-tag">AWS</span>
+                    <span class="px-3 py-1 skill-tag">GCP</span>
+                    <span class="px-3 py-1 skill-tag">Docker</span>
+                    <span class="px-3 py-1 skill-tag">CI/CD</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Portfolio Section -->
+      <section id="portfolio" class="py-20 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-3xl font-bold text-green-400 mb-8 flicker">
+            > ls -la portfolio/
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Rupeni AI -->
+            <div class="terminal-window p-6 transform hover:scale-105 transition-transform duration-300">
+              <h3 class="text-lg font-semibold text-green-400 mb-4">
+                > Rupeni AI
+              </h3>
+              <div class="aspect-w-16 aspect-h-9 mb-4">
+                <img src="https://rupeni.com/assets/logo-Dsp1TEsO.svg" alt="Rupeni AI Preview" class="object-contain rounded-lg">
+              </div>
+              <p class="text-green-400 mb-4">Smart chatbot for businesses</p>
+              <a href="https://rupeni.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 neon-border text-green-400 hover:text-green-300 transition-all duration-300">
+                > Visit_Site()
+              </a>
+            </div>
+
+            <!-- Pacific Bedbank -->
+            <div class="terminal-window p-6 transform hover:scale-105 transition-transform duration-300">
+              <h3 class="text-lg font-semibold text-green-400 mb-4">
+                > Pacific Bedbank
+              </h3>
+              <div class="aspect-w-16 aspect-h-9 mb-4">
+                <img src="https://pacificbedbank.com/images/LogoPBB-1.png" alt="Pacific Bedbank Preview" class="object-contain rounded-lg">
+              </div>
+              <p class="text-green-400 mb-4">Travel industry booking platform</p>
+              <a href="https://pacificbedbank.com/index.html" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 neon-border text-green-400 hover:text-green-300 transition-all duration-300">
+                > Visit_Site()
+              </a>
+            </div>
+
+            <!-- Vaizee Payments -->
+            <div class="terminal-window p-6 transform hover:scale-105 transition-transform duration-300">
+              <h3 class="text-lg font-semibold text-green-400 mb-4">
+                > Vaizee Payments
+              </h3>
+              <div class="aspect-w-16 aspect-h-9 mb-4">
+                <img src="https://payments.vaizee.com/cdn/logo-white.svg" alt="Vaizee Payments Preview" class="object-contain rounded-lg">
+              </div>
+              <p class="text-green-400 mb-4">Secure payment processing solution</p>
+              <a href="https://payments.vaizee.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 neon-border text-green-400 hover:text-green-300 transition-all duration-300">
+                > Visit_Site()
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="py-20 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <div class="terminal-dot"></div>
+                <div class="terminal-dot"></div>
+                <div class="terminal-dot"></div>
+              </div>
+            </div>
+            <div class="p-6">
+              <h2 class="text-3xl font-bold text-green-400 mb-8">
+                > Contact_Init.sh
+              </h2>
+              <div class="flex flex-col items-center justify-center space-y-4">
+                <a
+                  href="mailto:arahuc91@gmail.com"
+                  class="text-green-400 hover:text-green-300"
+                >
+                  > echo "arahuc91@gmail.com"
+                </a>
+                <p class="text-green-500">> Phone: +679 8363371</p>
+                <p class="text-green-500">
+                  > Location: Drasa Dam, Lautoka, Fiji
+                </p>
+                <div class="flex space-x-4">
+                  <a
+                    href="https://www.linkedin.com/in/alvin-rahul-chauhan/"
+                    target="_blank"
+                    class="text-green-400 hover:text-green-300"
+                  >
+                    <span class="sr-only">LinkedIn</span>
+                    <svg
+                      class="w-6 h-6"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                      />
+                    </svg>
+                  </a>
+                  <a
+                    href="https://github.com/arahulc91"
+                    target="_blank"
+                    class="text-green-400 hover:text-green-300"
+                  >
+                    <span class="sr-only">GitHub</span>
+                    <svg
+                      class="h-6 w-6"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-black text-green-400 py-8 border-t border-green-500">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p>2025 Alvin Rahul Chauhan. chmod 755 all_rights_reserved</p>
+      </div>
+    </footer>
+
+    <script>
+      // Launch confetti from bot position
+      function fireConfetti() {
+        const defaults = {
+          origin: { x: 0.9, y: 0.9 }, // Bottom right corner
+          colors: ['#39FF14', '#FF0000', '#FFFF00', '#00FFFF'], // Neon green, red, yellow, blue
+          gravity: 0.7, // Reduced gravity for higher rise
+        };
+
+        // Fire in multiple directions
+        function fireAtAngle(angle, velocity) {
+          confetti({
+            ...defaults,
+            particleCount: 15,
+            scalar: 1.2,
+            spread: 50,
+            startVelocity: velocity,
+            ticks: 300,
+            angle: angle,
+          });
+        }
+
+        // Create a circular burst effect
+        const angles = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
+        angles.forEach((angle, i) => {
+          setTimeout(() => {
+            fireAtAngle(angle, 35);
+          }, i * 50); // Stagger the bursts
+        });
+
+        // Add some random bursts for more chaos
+        setTimeout(() => {
+          confetti({
+            ...defaults,
+            particleCount: 40,
+            spread: 80,
+            startVelocity: 45,
+            ticks: 400,
+            angle: 135,
+          });
+        }, 200);
+
+        setTimeout(() => {
+          confetti({
+            ...defaults,
+            particleCount: 30,
+            spread: 90,
+            startVelocity: 40,
+            ticks: 400,
+            angle: 225,
+          });
+        }, 400);
+      }
+
+      // Fire the confetti when page loads
+      fireConfetti();
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Optimize particles.js configuration
+        particlesJS('particles-js', {
+          "particles": {
+            "number": {
+              "value": 40,
+              "density": {
+                "enable": true,
+                "value_area": 800
+              }
+            },
+            "color": {
+              "value": "#00ff00"
+            },
+            "shape": {
+              "type": "circle"
+            },
+            "opacity": {
+              "value": 0.5,
+              "random": false
+            },
+            "size": {
+              "value": 3,
+              "random": true
+            },
+            "line_linked": {
+              "enable": true,
+              "distance": 150,
+              "color": "#00ff00",
+              "opacity": 0.4,
+              "width": 1
+            },
+            "move": {
+              "enable": true,
+              "speed": 1.5,
+              "direction": "none",
+              "random": false,
+              "straight": false,
+              "out_mode": "out",
+              "bounce": false
+            }
+          },
+          "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+              "onhover": {
+                "enable": true,
+                "mode": "repulse"
+              },
+              "onclick": {
+                "enable": true,
+                "mode": "push"
+              },
+              "resize": true
+            }
+          },
+          "retina_detect": true
+        });
+
+        // Optimize cursor movement using requestAnimationFrame
+        const cursor = document.querySelector('.custom-cursor');
+        let mouseX = 0;
+        let mouseY = 0;
+        let currentX = 0;
+        let currentY = 0;
+        let lastTrailTime = 0;
+        const trailDelay = 50; // Delay between trail elements in milliseconds
+
+        function createTrailElement(x, y) {
+          const trail = document.createElement('div');
+          trail.className = 'cursor-trail';
+          trail.textContent = Math.random() < 0.5 ? '0' : '1';
+          trail.style.left = x + 'px';
+          trail.style.top = y + 'px';
+          document.body.appendChild(trail);
+          
+          // Remove the trail element after animation
+          trail.addEventListener('animationend', () => {
+            document.body.removeChild(trail);
+          });
+        }
+
+        function updateCursor() {
+          const dx = mouseX - currentX;
+          const dy = mouseY - currentY;
+          
+          currentX += dx * 0.2;
+          currentY += dy * 0.2;
+          
+          cursor.style.transform = `translate(${currentX}px, ${currentY}px)`;
+
+          // Create trail with throttling
+          const now = Date.now();
+          if (now - lastTrailTime > trailDelay && (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1)) {
+            createTrailElement(currentX, currentY);
+            lastTrailTime = now;
+          }
+
+          requestAnimationFrame(updateCursor);
+        }
+        
+        document.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        }, { passive: true });
+
+        requestAnimationFrame(updateCursor);
+
+        // Mobile menu toggle with optimized event listeners
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuButton && mobileMenu) {
+          mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+          }, { passive: true });
+
+          // Close mobile menu when clicking a link
+          const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+          mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+              mobileMenu.classList.add('hidden');
+            }, { passive: true });
+          });
+
+          // Close mobile menu when clicking outside
+          document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+              mobileMenu.classList.add('hidden');
+            }
+          }, { passive: true });
+        }
+
+        // Hide custom cursor on touch devices
+        if ('ontouchstart' in window) {
+          cursor.style.display = 'none';
+          document.body.style.cursor = 'auto';
+        } else {
+          document.body.style.cursor = 'none';
+        }
+        
+        // Show/hide cursor events
+        document.addEventListener('mouseenter', () => {
+          cursor.style.display = 'block';
+        }, { passive: true });
+        
+        document.addEventListener('mouseleave', () => {
+          cursor.style.display = 'none';
+        }, { passive: true });
+      });
+    </script>
+    <script>
+      // Snake Game Initialization
+      document.addEventListener('DOMContentLoaded', () => {
+        const gameOverlay = document.getElementById('game-overlay');
+        const canvas = document.getElementById('snake-canvas');
+        const playButton = document.getElementById('play-snake');
+        const closeButton = document.getElementById('close-game');
+        let game = null;
+        let gameLoop = null;
+
+        function resizeCanvas() {
+          const width = Math.min(window.innerWidth - 40, 800);
+          const height = Math.min(window.innerHeight - 40, 600);
+          canvas.width = width;
+          canvas.height = height;
+          if (game) {
+            game.width = width;
+            game.height = height;
+          }
+        }
+
+        function startGame() {
+          if (gameLoop) clearInterval(gameLoop);
+          game = new SnakeGame(canvas, canvas.width, canvas.height);
+          gameLoop = setInterval(() => {
+            game.update();
+            game.draw();
+          }, game.speed);
+        }
+
+        playButton.addEventListener('click', () => {
+          gameOverlay.classList.remove('hidden');
+          resizeCanvas();
+          startGame();
+          // Add fade effect to hero content
+          document.querySelector('.hero-content').style.opacity = '0.1';
+        });
+
+        closeButton.addEventListener('click', () => {
+          gameOverlay.classList.add('hidden');
+          if (gameLoop) clearInterval(gameLoop);
+          // Restore hero content
+          document.querySelector('.hero-content').style.opacity = '1';
+        });
+
+        window.addEventListener('keydown', (e) => {
+          if (!game) return;
+          
+          switch(e.key) {
+            case 'ArrowUp':
+              if (game.direction !== 'down') game.direction = 'up';
+              break;
+            case 'ArrowDown':
+              if (game.direction !== 'up') game.direction = 'down';
+              break;
+            case 'ArrowLeft':
+              if (game.direction !== 'right') game.direction = 'left';
+              break;
+            case 'ArrowRight':
+              if (game.direction !== 'left') game.direction = 'right';
+              break;
+            case ' ':
+              if (game.gameOver) {
+                game.restart();
+                clearInterval(gameLoop);
+                gameLoop = setInterval(() => {
+                  game.update();
+                  game.draw();
+                }, game.speed);
+              }
+              break;
+          }
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+      });
+    </script>
+    <script src="js/matrix-effects.js"></script>
+    <script src="js/hacker-effects.js"></script>
+    <script src="js/funny-messages.js"></script>
+    <!-- Chatbot UI -->
+    <div class="chatbot-toggle">
+      🤖
+    </div>
+    <div class="chatbot-container">
+      <div class="chat-header">
+        <h3 class="text-green-400 text-lg">AI Assistant</h3>
+        <button class="close-chat">&times;</button>
+      </div>
+      <div id="chat-messages" class="chat-messages"></div>
+      <div class="chat-input-container">
+        <form id="chat-form">
+          <input
+            type="text"
+            id="chat-input"
+            placeholder="Type your message..."
+            autocomplete="off"
+          />
+          <button type="submit" id="chat-submit">Send</button>
+        </form>
+      </div>
+    </div>
+    <script src="js/chatbot.js"></script>
+  </body>
+</html>
