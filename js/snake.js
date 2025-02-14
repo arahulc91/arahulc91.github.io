@@ -17,6 +17,9 @@ class SnakeGame {
         this.touchStartY = null;
         this.minSwipeDistance = 30; // Minimum distance for a swipe
         
+        // Device detection
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
         // Colors matching the site theme
         this.colors = {
             snake: '#4ade80', // green-400
@@ -160,7 +163,8 @@ class SnakeGame {
             this.ctx.textAlign = 'center';
             this.ctx.fillText('GAME OVER', this.width / 2, this.height / 2);
             this.ctx.font = '20px "Share Tech Mono"';
-            this.ctx.fillText('Tap to restart', this.width / 2, this.height / 2 + 40);
+            const restartText = this.isMobile ? 'Tap to restart' : 'Press SPACE to restart';
+            this.ctx.fillText(restartText, this.width / 2, this.height / 2 + 40);
             this.ctx.textAlign = 'left';
         }
     }
