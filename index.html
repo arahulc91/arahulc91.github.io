@@ -41,7 +41,7 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
         border-radius: 10px;
         display: flex;
         flex-direction: column;
-        z-index: 1000;
+        z-index: 999;
         box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
         transition: all 0.3s ease;
       }
@@ -229,7 +229,7 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
     <div class="loading-bar" aria-hidden="true"></div>
     <div id="particles-js" aria-hidden="true"></div>
     <!-- Game Overlay -->
-    <div id="game-overlay" class="fixed inset-0 bg-black bg-opacity-95 z-[60] hidden flex items-center justify-center">
+    <div id="game-overlay" class="fixed inset-0 bg-black bg-opacity-95 z-[1000] hidden flex items-center justify-center">
       <button id="close-game" class="game-close-btn absolute top-4 right-4 text-green-400 hover:text-green-300">&times;</button>
       <canvas id="snake-canvas" class="border border-green-400"></canvas>
     </div>
