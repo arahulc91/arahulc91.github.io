@@ -149,11 +149,26 @@ class Chatbot {
     const chatMessages = document.getElementById("chat-messages");
     const messageDiv = document.createElement("div");
     messageDiv.className = `chat-message ${sender}-message ${className}`;
-    messageDiv.innerHTML = `
+    
+    if (className === 'loading-message') {
+      // Create terminal-style loader
+      messageDiv.innerHTML = `
         <div class="message-content">
-            <span class="message-text">${sender === 'user' ? message : ''}</span>
+          <div class="terminal-loader">
+            <span class="command">processing request</span>
+            <span class="command">analyzing context</span>
+            <span class="command">generating response</span>
+          </div>
         </div>
-    `;
+      `;
+    } else {
+      messageDiv.innerHTML = `
+        <div class="message-content">
+          <span class="message-text">${sender === 'user' ? message : ''}</span>
+        </div>
+      `;
+    }
+    
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 

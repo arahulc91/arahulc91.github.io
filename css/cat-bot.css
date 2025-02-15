@@ -47,6 +47,68 @@
   to { opacity: 1; }
 }
 
+/* Terminal-style Loading Animation */
+.terminal-loader {
+  font-family: 'Share Tech Mono', monospace;
+  color: #4ade80;
+  padding: 8px;
+  position: relative;
+}
+
+.terminal-loader::before {
+  content: '>';
+  margin-right: 8px;
+  animation: loaderBlink 1s infinite;
+}
+
+.terminal-loader::after {
+  content: '_';
+  position: absolute;
+  animation: loaderTyping 1.2s infinite steps(3);
+}
+
+.terminal-loader .command {
+  opacity: 0;
+  animation: loaderFadeIn 2.4s infinite;
+}
+
+.terminal-loader .command:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.terminal-loader .command:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.terminal-loader .command:nth-child(3) {
+  animation-delay: 1.6s;
+}
+
+@keyframes loaderTyping {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes loaderFadeIn {
+  0%, 33% { opacity: 0; }
+  34%, 66% { opacity: 1; }
+  67%, 100% { opacity: 0; }
+}
+
+@keyframes loaderBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Remove previous loading styles */
+.loading-dots, .skeleton-loader {
+  display: none;
+}
+
+.bot-speech.loading {
+  display: block;
+}
+
 /* Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
   .bot-assistant {
