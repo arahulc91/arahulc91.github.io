@@ -1043,11 +1043,23 @@ class SoftwareEngineer {
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ 
         alpha: true,           // Enable transparency
-        antialias: true 
+        antialias: true,
+        powerPreference: "high-performance" // Add this for better performance
     });
 
+    // Add these lines to prevent white flash
+    renderer.domElement.style.background = 'transparent';
+    container.style.background = 'transparent';
+    
+    // Set pixel ratio for better quality on high-DPI displays
+    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(100, 100);
     renderer.setClearColor(0x000000, 0);  // Set background to fully transparent
+
+    // Add this to ensure container is transparent
+    container.style.position = 'relative';
+    container.style.zIndex = '1000';
+    
     container.appendChild(renderer.domElement);
 
     camera.position.z = 5;
