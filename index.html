@@ -151,7 +151,7 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
         }
 
         #chat-input {
-          font-size: 16px;
+          font-size: 16px;  /* Prevents zoom on iOS */
           padding: 12px 8px;
         }
 
@@ -190,13 +190,14 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
         right: 20px;
         width: 70px;
         height: 70px;
-        display: flex;
+        display: none;
         justify-content: center;
         align-items: center;
         cursor: pointer;
         z-index: 999;
       }
 
+      /* Only show on mobile */
       @media (max-width: 768px) {
         .chatbot-toggle {
           display: flex;
@@ -209,9 +210,10 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
         transition: transform 0.3s ease;
       }
 
-      .chatbot-toggle:hover #bot-model-container {
-        transform: scale(1.1);
-      }
+      #bot-model-container canvas {
+        border: none;
+        outline: none;
+    }
 
       /* Rest of the existing chatbot styles */
       .chat-header {
@@ -1035,150 +1037,168 @@ class SoftwareEngineer {
     </script>
     <script type="module">
     import * as THREE from 'three';
-    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-    // Initialize Three.js scene
     const container = document.getElementById('bot-model-container');
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-
-    renderer.setSize(70, 70);
-    renderer.setClearColor(0x000000, 0);
-    container.appendChild(renderer.domElement);
-
-    // Enhanced lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0x39FF14, 1);
-    directionalLight.position.set(5, 5, 5);
-    scene.add(directionalLight);
-
-    // Add point lights for dramatic effect
-    const pointLight1 = new THREE.PointLight(0x39FF14, 1, 10);
-    pointLight1.position.set(2, 2, 2);
-    scene.add(pointLight1);
-
-    const pointLight2 = new THREE.PointLight(0x39FF14, 1, 10);
-    pointLight2.position.set(-2, -2, -2);
-    scene.add(pointLight2);
-
-    // Position camera
-    camera.position.z = 2;
-
-    // Add controls with damping
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableZoom = false;
-    controls.enablePan = false;
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 3;
-
-    // Create particle system
-    const particleCount = 100;
-    const particles = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount * 3; i += 3) {
-        const radius = 1;
-        const theta = Math.random() * Math.PI * 2;
-        const phi = Math.random() * Math.PI;
-        
-        positions[i] = radius * Math.sin(phi) * Math.cos(theta);
-        positions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
-        positions[i + 2] = radius * Math.cos(phi);
-    }
-
-    particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    const particleMaterial = new THREE.PointsMaterial({
-        color: 0x39FF14,
-        size: 0.02,
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending
+    const renderer = new THREE.WebGLRenderer({ 
+        alpha: true,           // Enable transparency
+        antialias: true 
     });
 
-    const particleSystem = new THREE.Points(particles, particleMaterial);
-    scene.add(particleSystem);
+    renderer.setSize(100, 100);
+    renderer.setClearColor(0x000000, 0);  // Set background to fully transparent
+    container.appendChild(renderer.domElement);
 
-    // Load advanced AI head model
-    const loader = new GLTFLoader();
-    loader.load(
-        'https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/artificial-intelligence/model.gltf',
-        function (gltf) {
-            const model = gltf.scene;
-            model.scale.set(0.4, 0.4, 0.4);
-            model.rotation.set(0, 0, 0);
-            scene.add(model);
+    camera.position.z = 5;
 
-            // Add subtle floating animation
-            function animateModel() {
-                model.position.y = Math.sin(Date.now() * 0.001) * 0.1;
-                model.rotation.y += 0.005;
-            }
+    // Create robot face components
+    const faceGroup = new THREE.Group();
 
-            // Animation loop
-            function animate() {
-                requestAnimationFrame(animate);
-                
-                // Animate model
-                animateModel();
-                
-                // Animate particles
-                particleSystem.rotation.y += 0.001;
-                particleSystem.rotation.x += 0.0005;
-                
-                // Update particle positions
-                const positions = particles.attributes.position.array;
-                for (let i = 0; i < positions.length; i += 3) {
-                    positions[i + 1] += Math.sin(Date.now() * 0.001 + i) * 0.001;
-                }
-                particles.attributes.position.needsUpdate = true;
-                
-                controls.update();
-                renderer.render(scene, camera);
-            }
-            
-            animate();
+    // Face base (rounded rectangle effect using multiple shapes)
+    const faceGeometry = new THREE.BoxGeometry(3, 4, 0.5);
+    const faceMaterial = new THREE.MeshBasicMaterial({
+        color: 0x111111,
+        transparent: true,
+        opacity: 0.7
+    });
+    const face = new THREE.Mesh(faceGeometry, faceMaterial);
+
+    // Add rounded corners effect using additional spheres
+    const cornerRadius = 0.2;
+    const cornerGeometry = new THREE.SphereGeometry(cornerRadius, 8, 8);
+    const corners = [];
+    const cornerPositions = [
+        [-1.5, 2, 0], [1.5, 2, 0],    // Top corners
+        [-1.5, -2, 0], [1.5, -2, 0]   // Bottom corners
+    ];
+
+    cornerPositions.forEach(pos => {
+        const corner = new THREE.Mesh(cornerGeometry, faceMaterial);
+        corner.position.set(...pos);
+        corners.push(corner);
+        faceGroup.add(corner);
+    });
+
+    faceGroup.add(face);
+
+    // Eyes
+    const eyeGeometry = new THREE.CircleGeometry(0.4, 32);
+    const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0x39FF14 });
+    const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+    leftEye.position.set(-0.8, 0.5, 0.3);
+    rightEye.position.set(0.8, 0.5, 0.3);
+    faceGroup.add(leftEye);
+    faceGroup.add(rightEye);
+
+    // Mouth (will be animated)
+    const mouthGeometry = new THREE.BufferGeometry();
+    const mouthMaterial = new THREE.LineBasicMaterial({ color: 0x39FF14 });
+    const mouthPoints = new Float32Array([
+        -1, -0.5, 0.3,
+        -0.5, -0.8, 0.3,
+        0.5, -0.8, 0.3,
+        1, -0.5, 0.3
+    ]);
+    mouthGeometry.setAttribute('position', new THREE.BufferAttribute(mouthPoints, 3));
+    const mouth = new THREE.Line(mouthGeometry, mouthMaterial);
+    faceGroup.add(mouth);
+
+    scene.add(faceGroup);
+
+    // Expressions
+    const expressions = {
+        neutral: () => {
+            const points = new Float32Array([
+                -1, -0.5, 0.3,
+                -0.5, -0.7, 0.3,
+                0.5, -0.7, 0.3,
+                1, -0.5, 0.3
+            ]);
+            mouth.geometry.setAttribute('position', new THREE.BufferAttribute(points, 3));
+            leftEye.scale.set(1, 1, 1);
+            rightEye.scale.set(1, 1, 1);
         },
-        undefined,
-        function (error) {
-            console.error('Error loading 3D model:', error);
-            
-            // Fallback: Create abstract geometric shape if model fails to load
-            const geometry = new THREE.IcosahedronGeometry(0.5, 1);
-            const material = new THREE.MeshPhongMaterial({
-                color: 0x39FF14,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.8
-            });
-            const abstractModel = new THREE.Mesh(geometry, material);
-            scene.add(abstractModel);
-            
-            function animate() {
-                requestAnimationFrame(animate);
-                abstractModel.rotation.x += 0.005;
-                abstractModel.rotation.y += 0.01;
-                particleSystem.rotation.y += 0.001;
-                controls.update();
-                renderer.render(scene, camera);
-            }
-            
-            animate();
+        happy: () => {
+            const points = new Float32Array([
+                -1, -0.5, 0.3,
+                -0.5, -0.2, 0.3,
+                0.5, -0.2, 0.3,
+                1, -0.5, 0.3
+            ]);
+            mouth.geometry.setAttribute('position', new THREE.BufferAttribute(points, 3));
+            leftEye.scale.set(1, 0.7, 1);
+            rightEye.scale.set(1, 0.7, 1);
+        },
+        sad: () => {
+            const points = new Float32Array([
+                -1, -0.8, 0.3,
+                -0.5, -1, 0.3,
+                0.5, -1, 0.3,
+                1, -0.8, 0.3
+            ]);
+            mouth.geometry.setAttribute('position', new THREE.BufferAttribute(points, 3));
+            leftEye.scale.set(1, 0.5, 1);
+            rightEye.scale.set(1, 0.5, 1);
+        },
+        angry: () => {
+            const points = new Float32Array([
+                -1, -0.8, 0.3,
+                -0.5, -0.6, 0.3,
+                0.5, -0.6, 0.3,
+                1, -0.8, 0.3
+            ]);
+            mouth.geometry.setAttribute('position', new THREE.BufferAttribute(points, 3));
+            leftEye.scale.set(0.7, 1, 1);
+            rightEye.scale.set(0.7, 1, 1);
         }
-    );
+    };
+
+    // Animation loop
+    let currentExpression = 'neutral';
+    let expressionTimer = 0;
+    const expressionDuration = 3000; // Change expression every 3 seconds
+
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        // Change expression periodically
+        const now = Date.now();
+        if (now - expressionTimer > expressionDuration) {
+            const expressionList = ['neutral', 'happy', 'sad', 'angry'];
+            currentExpression = expressionList[Math.floor(Math.random() * expressionList.length)];
+            expressions[currentExpression]();
+            expressionTimer = now;
+        }
+        
+        // Add subtle floating animation
+        faceGroup.position.y = Math.sin(Date.now() * 0.002) * 0.1;
+        faceGroup.rotation.y = Math.sin(Date.now() * 0.001) * 0.1;
+        
+        renderer.render(scene, camera);
+    }
+
+    animate();
 
     // Handle window resize
-    window.addEventListener('resize', onWindowResize, false);
+    window.addEventListener('resize', () => {
+        renderer.setSize(100, 100);
+    });
 
-    function onWindowResize() {
-        renderer.setSize(70, 70);
-    }
+    // Add interaction
+    container.addEventListener('click', () => {
+        expressions.happy(); // Show happy expression when clicked
+        setTimeout(() => expressions.neutral(), 1000); // Return to neutral after 1 second
+    });
+
+    container.addEventListener('mouseover', () => {
+        expressions.happy(); // Show happy expression on hover
+    });
+
+    container.addEventListener('mouseout', () => {
+        expressions.neutral(); // Return to neutral when mouse leaves
+    });
     </script>
     <script>
       // GitHub Repositories Carousel
