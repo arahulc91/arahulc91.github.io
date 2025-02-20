@@ -7,6 +7,7 @@ class Chatbot {
     this.lastRequestTime = 0;
     this.minRequestInterval = 1000; // Minimum 1 second between requests
     this.sessionId = this.generateSessionId();
+    this.isMinimized = false;
   }
 
   generateSessionId() {
@@ -27,15 +28,33 @@ class Chatbot {
     const toggleButton = document.querySelector('.chatbot-toggle');
     const chatContainer = document.querySelector('.chatbot-container');
     const closeButton = document.querySelector('.close-chat');
+    const minimizeButton = document.querySelector('.minimize-chat');
 
     toggleButton?.addEventListener('click', () => {
       chatContainer.classList.add('active');
+      chatContainer.classList.remove('minimized');
+      this.isMinimized = false;
       toggleButton.style.display = 'none';
     });
 
     closeButton?.addEventListener('click', () => {
       chatContainer.classList.remove('active');
+      chatContainer.classList.remove('minimized');
+      this.isMinimized = false;
       toggleButton.style.display = 'flex';
+    });
+
+    minimizeButton?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.isMinimized = !this.isMinimized;
+      chatContainer.classList.toggle('minimized');
+    });
+
+    chatContainer?.addEventListener('click', () => {
+      if (this.isMinimized) {
+        this.isMinimized = false;
+        chatContainer.classList.remove('minimized');
+      }
     });
 
     // Handle clicks outside the chatbot on mobile
@@ -46,6 +65,8 @@ class Chatbot {
         
         if (!isClickInsideChatbot && !isClickOnToggle && chatContainer.classList.contains('active')) {
           chatContainer.classList.remove('active');
+          chatContainer.classList.remove('minimized');
+          this.isMinimized = false;
           toggleButton.style.display = 'flex';
         }
       }
