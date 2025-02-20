@@ -426,7 +426,6 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
             <a href="#contact" class="block px-3 py-2 hover:text-green-300 transition-colors">Contact</a>
           </div>
         </div>
-      </div>
     </nav>
 
     <main class="pt-16 crt-effect">
@@ -1108,29 +1107,16 @@ class SoftwareEngineer {
           // Initialize display
           showPage(0);
 
-          // Auto-rotate every 10 seconds
-          let autoRotateInterval = setInterval(() => {
-            showPage(currentPage + 1);
-          }, 10000);
-
           // Navigation buttons
           const prevButton = document.getElementById('prev-repos');
           const nextButton = document.getElementById('next-repos');
 
           prevButton.addEventListener('click', () => {
-            clearInterval(autoRotateInterval);
             showPage(currentPage - 1);
-            autoRotateInterval = setInterval(() => {
-              showPage(currentPage + 1);
-            }, 10000);
           });
 
           nextButton.addEventListener('click', () => {
-            clearInterval(autoRotateInterval);
             showPage(currentPage + 1);
-            autoRotateInterval = setInterval(() => {
-              showPage(currentPage + 1);
-            }, 10000);
           });
 
         } catch (error) {
