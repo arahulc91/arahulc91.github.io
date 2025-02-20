@@ -8,6 +8,7 @@ class Chatbot {
     this.minRequestInterval = 1000; // Minimum 1 second between requests
     this.sessionId = this.generateSessionId();
     this.isMinimized = false;
+    this.isMaximized = false;
   }
 
   generateSessionId() {
@@ -29,29 +30,76 @@ class Chatbot {
     const chatContainer = document.querySelector('.chatbot-container');
     const closeButton = document.querySelector('.close-chat');
     const minimizeButton = document.querySelector('.minimize-chat');
+    const maximizeButton = document.querySelector('.maximize-chat');
 
     toggleButton?.addEventListener('click', () => {
       chatContainer.classList.add('active');
-      chatContainer.classList.remove('minimized');
+      chatContainer.classList.add('maximized');
+      this.isMaximized = true;
       this.isMinimized = false;
       toggleButton.style.display = 'none';
     });
 
     closeButton?.addEventListener('click', () => {
-      chatContainer.classList.remove('active');
-      chatContainer.classList.remove('minimized');
-      this.isMinimized = false;
-      toggleButton.style.display = 'flex';
+      if (this.isMaximized) {
+        // Always close completely on mobile
+        if (window.innerWidth <= 768) {
+          chatContainer.classList.remove('active');
+          chatContainer.classList.remove('maximized');
+          this.isMaximized = false;
+          toggleButton.style.display = 'flex';
+        } else {
+          // On desktop, return to original position
+          chatContainer.classList.remove('maximized');
+          this.isMaximized = false;
+        }
+      } else {
+        // Close completely
+        chatContainer.classList.remove('active');
+        chatContainer.classList.remove('minimized');
+        this.isMinimized = false;
+        if (window.innerWidth <= 768) {
+          toggleButton.style.display = 'flex';
+        }
+      }
     });
 
     minimizeButton?.addEventListener('click', (e) => {
       e.stopPropagation();
-      this.isMinimized = !this.isMinimized;
-      chatContainer.classList.toggle('minimized');
+      if (window.innerWidth <= 768) {
+        // On mobile, just toggle visibility
+        chatContainer.classList.remove('active');
+        toggleButton.style.display = 'flex';
+      } else {
+        // On desktop, keep minimize behavior
+        if (!this.isMaximized) {
+          this.isMinimized = !this.isMinimized;
+          chatContainer.classList.toggle('minimized');
+        }
+      }
+    });
+
+    maximizeButton?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (window.innerWidth <= 768) {
+        // On mobile, just toggle visibility
+        chatContainer.classList.remove('active');
+        toggleButton.style.display = 'flex';
+      } else {
+        // On desktop, keep maximize behavior
+        this.isMaximized = !this.isMaximized;
+        chatContainer.classList.toggle('maximized');
+        
+        if (this.isMaximized) {
+          chatContainer.classList.remove('minimized');
+          this.isMinimized = false;
+        }
+      }
     });
 
     chatContainer?.addEventListener('click', () => {
-      if (this.isMinimized) {
+      if (window.innerWidth > 768 && this.isMinimized) {
+        // Only handle minimize click on desktop
         this.isMinimized = false;
         chatContainer.classList.remove('minimized');
       }
@@ -64,10 +112,13 @@ class Chatbot {
         const isClickOnToggle = toggleButton.contains(e.target);
         
         if (!isClickInsideChatbot && !isClickOnToggle && chatContainer.classList.contains('active')) {
-          chatContainer.classList.remove('active');
-          chatContainer.classList.remove('minimized');
-          this.isMinimized = false;
-          toggleButton.style.display = 'flex';
+          if (!this.isMaximized) {
+            // Only close if not maximized
+            chatContainer.classList.remove('active');
+            chatContainer.classList.remove('minimized');
+            this.isMinimized = false;
+            toggleButton.style.display = 'flex';
+          }
         }
       }
     });
