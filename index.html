@@ -190,12 +190,11 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
         right: 20px;
         width: 70px;
         height: 70px;
-        display: none;
+        display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
         z-index: 999;
-        font-size: 2.5rem; /* Increased emoji size */
       }
 
       @media (max-width: 768px) {
@@ -204,9 +203,14 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
         }
       }
 
-      .chatbot-toggle i {
-        color: #39FF14;
-        font-size: 24px;
+      #bot-model-container {
+        width: 100%;
+        height: 100%;
+        transition: transform 0.3s ease;
+      }
+
+      .chatbot-toggle:hover #bot-model-container {
+        transform: scale(1.1);
       }
 
       /* Rest of the existing chatbot styles */
@@ -995,7 +999,7 @@ class SoftwareEngineer {
     <script src="js/funny-messages.js"></script>
     <!-- Chatbot UI -->
     <div class="chatbot-toggle">
-      <span>🤖</span>
+      <div id="bot-model-container"></div>
     </div>
     <div class="chatbot-container">
       <div class="chat-header">
@@ -1020,6 +1024,162 @@ class SoftwareEngineer {
       </div>
     </div>
     <script src="js/chatbot.js"></script>
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.159.0/examples/jsm/",
+        "three/examples/": "https://unpkg.com/three@0.159.0/examples/"
+      }
+    }
+    </script>
+    <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    // Initialize Three.js scene
+    const container = document.getElementById('bot-model-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+    renderer.setSize(70, 70);
+    renderer.setClearColor(0x000000, 0);
+    container.appendChild(renderer.domElement);
+
+    // Enhanced lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0x39FF14, 1);
+    directionalLight.position.set(5, 5, 5);
+    scene.add(directionalLight);
+
+    // Add point lights for dramatic effect
+    const pointLight1 = new THREE.PointLight(0x39FF14, 1, 10);
+    pointLight1.position.set(2, 2, 2);
+    scene.add(pointLight1);
+
+    const pointLight2 = new THREE.PointLight(0x39FF14, 1, 10);
+    pointLight2.position.set(-2, -2, -2);
+    scene.add(pointLight2);
+
+    // Position camera
+    camera.position.z = 2;
+
+    // Add controls with damping
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 3;
+
+    // Create particle system
+    const particleCount = 100;
+    const particles = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+
+    for (let i = 0; i < particleCount * 3; i += 3) {
+        const radius = 1;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.random() * Math.PI;
+        
+        positions[i] = radius * Math.sin(phi) * Math.cos(theta);
+        positions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
+        positions[i + 2] = radius * Math.cos(phi);
+    }
+
+    particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const particleMaterial = new THREE.PointsMaterial({
+        color: 0x39FF14,
+        size: 0.02,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
+    });
+
+    const particleSystem = new THREE.Points(particles, particleMaterial);
+    scene.add(particleSystem);
+
+    // Load advanced AI head model
+    const loader = new GLTFLoader();
+    loader.load(
+        'https://market-assets.fra1.cdn.digitaloceanspaces.com/market-assets/models/artificial-intelligence/model.gltf',
+        function (gltf) {
+            const model = gltf.scene;
+            model.scale.set(0.4, 0.4, 0.4);
+            model.rotation.set(0, 0, 0);
+            scene.add(model);
+
+            // Add subtle floating animation
+            function animateModel() {
+                model.position.y = Math.sin(Date.now() * 0.001) * 0.1;
+                model.rotation.y += 0.005;
+            }
+
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                // Animate model
+                animateModel();
+                
+                // Animate particles
+                particleSystem.rotation.y += 0.001;
+                particleSystem.rotation.x += 0.0005;
+                
+                // Update particle positions
+                const positions = particles.attributes.position.array;
+                for (let i = 0; i < positions.length; i += 3) {
+                    positions[i + 1] += Math.sin(Date.now() * 0.001 + i) * 0.001;
+                }
+                particles.attributes.position.needsUpdate = true;
+                
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+        },
+        undefined,
+        function (error) {
+            console.error('Error loading 3D model:', error);
+            
+            // Fallback: Create abstract geometric shape if model fails to load
+            const geometry = new THREE.IcosahedronGeometry(0.5, 1);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0x39FF14,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.8
+            });
+            const abstractModel = new THREE.Mesh(geometry, material);
+            scene.add(abstractModel);
+            
+            function animate() {
+                requestAnimationFrame(animate);
+                abstractModel.rotation.x += 0.005;
+                abstractModel.rotation.y += 0.01;
+                particleSystem.rotation.y += 0.001;
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+        }
+    );
+
+    // Handle window resize
+    window.addEventListener('resize', onWindowResize, false);
+
+    function onWindowResize() {
+        renderer.setSize(70, 70);
+    }
+    </script>
     <script>
       // GitHub Repositories Carousel
       async function fetchGitHubRepos() {
