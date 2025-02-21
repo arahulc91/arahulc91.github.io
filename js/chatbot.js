@@ -223,13 +223,13 @@ class Chatbot {
     messageDiv.className = `chat-message ${sender}-message ${className}`;
     
     if (className === 'loading-message') {
-      // Create terminal-style loader
+      // Create bouncing dots loader
       messageDiv.innerHTML = `
         <div class="message-content">
-          <div class="terminal-loader">
-            <span class="command">processing request</span>
-            <span class="command">analyzing context</span>
-            <span class="command">generating response</span>
+          <div class="bouncing-loader">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
           </div>
         </div>
       `;
