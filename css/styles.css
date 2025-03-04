@@ -81,7 +81,7 @@ h2 {
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 99999999999;
   mix-blend-mode: difference;
   will-change: transform;
   transform: translate(-50%, -50%);
