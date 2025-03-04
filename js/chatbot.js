@@ -1,4 +1,4 @@
-const API_URL = "https://ai-chat-production-e92f.up.railway.app/chat";
+const API_URL = "https://arahulc91-github-ai.up.railway.app/chat";
 
 class Chatbot {
   constructor() {
