@@ -46,6 +46,9 @@ function createCodeTypingEffect() {
 
   codeBlocks.forEach((block) => {
     const code = block.textContent;
+    const blockHeight = block.scrollHeight;
+
+    block.style.minHeight = `${blockHeight}px`;
     block.textContent = "";
     let index = 0;
 
@@ -54,6 +57,8 @@ function createCodeTypingEffect() {
         block.textContent += code.charAt(index);
         index++;
         setTimeout(typeCode, Math.random() * 50 + 20);
+      } else {
+        block.style.minHeight = "";
       }
     }
 

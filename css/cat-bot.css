@@ -1,206 +1,105 @@
+/*
+ * Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
+ * Glassmorphism theme - chatbot toggle styles
+ */
+
 .bot-assistant {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  font-family: 'Share Tech Mono', monospace;
-  color: #4ade80;
+  font-size: 3.5rem;
   cursor: pointer;
   background: transparent;
   padding: 15px;
   z-index: 1000;
-  font-size: 3.5rem;
   transition: transform 0.3s ease;
   user-select: none;
+  filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.6));
 }
 
 .bot-assistant:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.9));
 }
 
 .bot-speech {
   position: absolute;
   bottom: 100%;
   right: 0;
-  background: rgba(0, 0, 0, 0.9);
-  border: 1px solid #4ade80;
-  padding: 10px;
+  background: rgba(8, 8, 21, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  padding: 10px 14px;
   margin-bottom: 10px;
-  border-radius: 4px;
+  border-radius: 12px;
   display: none;
   white-space: nowrap;
-  animation: fadeIn 0.3s ease;
-  font-size: 1rem;
+  animation: fadeInPop 0.3s ease;
+  font-size: 0.875rem;
+  color: #f1f5f9;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .bot-speech::after {
-  content: '';
+  content: "";
   position: absolute;
-  bottom: -10px;
-  right: 20px;
-  border-width: 10px 10px 0;
+  bottom: -8px;
+  right: 24px;
+  border-width: 8px 8px 0;
   border-style: solid;
-  border-color: #4ade80 transparent transparent;
+  border-color: rgba(139, 92, 246, 0.3) transparent transparent;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes fadeInPop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-/* Terminal-style Loading Animation */
+/* Loading animation for chatbot */
 .terminal-loader {
-  font-family: 'Share Tech Mono', monospace;
-  color: #4ade80;
+  font-family: "Share Tech Mono", monospace;
+  color: #94a3b8;
   padding: 8px;
   position: relative;
 }
 
 .terminal-loader::before {
-  content: '>';
+  content: "•";
   margin-right: 8px;
+  color: #06b6d4;
   animation: loaderBlink 1s infinite;
 }
 
 .terminal-loader::after {
-  content: '_';
+  content: "_";
   position: absolute;
   animation: loaderTyping 1.2s infinite steps(3);
-}
-
-.terminal-loader .command {
-  opacity: 0;
-  animation: loaderFadeIn 2.4s infinite;
-}
-
-.terminal-loader .command:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.terminal-loader .command:nth-child(2) {
-  animation-delay: 0.8s;
-}
-
-.terminal-loader .command:nth-child(3) {
-  animation-delay: 1.6s;
+  color: #8b5cf6;
 }
 
 @keyframes loaderTyping {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes loaderFadeIn {
-  0%, 33% { opacity: 0; }
-  34%, 66% { opacity: 1; }
-  67%, 100% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 @keyframes loaderBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-/* Remove previous loading styles */
-.loading-dots, .skeleton-loader {
-  display: none;
-}
-
-.bot-speech.loading {
-  display: block;
-}
-
-/* Bouncing Dots Animation */
-.bouncing-loader {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px;
-}
-
-.bouncing-loader .dot {
-  width: 8px;
-  height: 8px;
-  background-color: #4ade80;
-  border-radius: 50%;
-  display: inline-block;
-  animation: bounce 1.2s ease-in-out infinite;
-}
-
-.bouncing-loader .dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.bouncing-loader .dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
+  0%,
+  100% {
+    opacity: 1;
   }
   50% {
-    transform: translateY(-6px);
-  }
-}
-
-/* Chat Message Styles */
-.chat-message {
-  margin: 8px 0;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #4ade80;
-  background: rgba(0, 0, 0, 0.9);
-  max-width: 80%;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
-}
-
-.chat-message .message-content {
-  font-family: 'Share Tech Mono', monospace;
-  color: #4ade80;
-  line-height: 1.5;
-}
-
-.chat-message a {
-  color: #4ade80;
-  text-decoration: underline;
-  word-break: break-all;
-}
-
-.chat-message a:hover {
-  color: #22c55e;
-}
-
-.user-message {
-  margin-left: auto;
-}
-
-.assistant-message {
-  margin-right: auto;
-}
-
-/* Mobile Responsive Styles */
-@media screen and (max-width: 768px) {
-  .bot-assistant {
-    bottom: 10px;
-    right: 10px;
-    font-size: 3rem;
-    padding: 10px;
-  }
-
-  .bot-speech {
-    font-size: 0.875rem;
-    right: 0;
-    max-width: calc(100vw - 40px);
-    white-space: normal;
-  }
-}
-
-/* Small mobile devices */
-@media screen and (max-width: 480px) {
-  .bot-assistant {
-    font-size: 2.8rem;
-    padding: 8px;
+    opacity: 0.3;
   }
 }

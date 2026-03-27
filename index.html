@@ -1,7 +1,7 @@
 <!--
 Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
 -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -42,11 +42,9 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
     <title>
       Alvin Rahul Chauhan - Senior Software Engineer | Full Stack Developer
     </title>
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <!-- Load styles and scripts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/styles.css" />
@@ -59,420 +57,84 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
       defer
     ></script>
     <script src="js/snake.js" defer></script>
-    <style>
-      /* Existing styles */
-      /* ... */
-
-      /* Chatbot styles */
-      .chatbot-container {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 350px;
-        height: 500px;
-        background-color: rgba(0, 0, 0, 0.9);
-        border: 2px solid #39ff14;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        z-index: 999999999;
-        box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
-        transition: all 0.3s ease-in-out;
-        transform-origin: bottom right;
-      }
-
-      .chatbot-container.maximized {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80vw;
-        height: 80vh;
-        max-width: 1200px;
-        max-height: 800px;
-      }
-
-      .chatbot-container.minimized {
-        transform: scale(0.3);
-        opacity: 0.8;
-        cursor: pointer;
-      }
-
-      .chatbot-container.minimized:hover {
-        opacity: 1;
-      }
-
-      .chatbot-container.minimized .chat-messages,
-      .chatbot-container.minimized .chat-input-container {
-        visibility: hidden;
-      }
-
-      .chat-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 15px;
-        border-bottom: 1px solid #39ff14;
-        background-color: rgba(0, 0, 0, 0.95);
-      }
-
-      .chat-header-buttons {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
-
-      .minimize-chat,
-      .maximize-chat,
-      .close-chat {
-        background: none;
-        border: none;
-        color: #39ff14;
-        cursor: pointer;
-        font-size: 20px;
-        padding: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: color 0.2s ease;
-        width: 30px;
-        height: 30px;
-        line-height: 1;
-      }
-
-      .close-chat {
-        font-size: 24px;
-      }
-
-      .minimize-chat:hover,
-      .maximize-chat:hover,
-      .close-chat:hover {
-        color: #2bff00;
-        transform: scale(1.1);
-      }
-
-      /* Mobile styles */
-      @media (max-width: 768px) {
-        .chatbot-toggle {
-          display: flex;
-        }
-
-        .chatbot-container {
-          display: none;
-        }
-
-        .chatbot-container.active {
-          display: flex;
-          width: 100% !important;
-          height: 100% !important;
-          max-height: none !important;
-          max-width: none !important;
-          top: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
-          bottom: 0 !important;
-          border-radius: 0;
-          transform: none !important;
-        }
-
-        .chat-input-container {
-          padding: 10px 5px;
-        }
-
-        #chat-input {
-          font-size: 16px; /* Prevents zoom on iOS */
-          padding: 12px 8px;
-        }
-
-        #chat-submit {
-          padding: 12px 20px;
-          font-size: 16px;
-        }
-      }
-
-      /* Small mobile devices */
-      @media (max-width: 380px) {
-        .chatbot-container {
-          width: calc(100% - 10px);
-          right: 5px;
-          bottom: 5px;
-        }
-
-        .chatbot-container.maximized {
-          width: 100% !important;
-          right: 0 !important;
-          bottom: 0 !important;
-        }
-      }
-
-      /* Landscape mode */
-      @media (max-height: 600px) and (orientation: landscape) {
-        .chatbot-container {
-          height: 80vh;
-        }
-      }
-
-      /* Toggle button for mobile */
-      .chatbot-toggle {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 70px;
-        height: 70px;
-        display: none;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        z-index: 999;
-      }
-
-      /* Only show on mobile */
-      @media (max-width: 768px) {
-        .chatbot-toggle {
-          display: flex;
-        }
-      }
-
-      #bot-model-container {
-        width: 100%;
-        height: 100%;
-        transition: transform 0.3s ease;
-      }
-
-      #bot-model-container canvas {
-        border: none;
-        outline: none;
-      }
-
-      /* Rest of the existing chatbot styles */
-      .chat-header {
-        padding: 10px;
-        background-color: rgba(57, 255, 20, 0.1);
-        border-bottom: 1px solid #39ff14;
-        border-radius: 8px 8px 0 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .chat-header .close-chat {
-        color: #39ff14;
-        background: none;
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-        padding: 5px;
-      }
-
-      .chat-messages {
-        flex-grow: 1;
-        overflow-y: auto;
-        padding: 15px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .chat-message {
-        max-width: 80%;
-        padding: 8px 12px;
-        border-radius: 15px;
-        margin: 5px 0;
-      }
-
-      .user-message {
-        align-self: flex-end;
-        background-color: rgba(57, 255, 20, 0.2);
-        border: 1px solid #39ff14;
-      }
-
-      .bot-message {
-        align-self: flex-start;
-        background-color: rgba(0, 0, 0, 0.8);
-        border: 1px solid #39ff14;
-      }
-
-      .chat-input-container {
-        padding: 10px;
-        border-top: 1px solid #39ff14;
-      }
-
-      #chat-form {
-        display: flex;
-        gap: 10px;
-      }
-
-      #chat-input {
-        flex-grow: 1;
-        background-color: rgba(0, 0, 0, 0.8);
-        border: 1px solid #39ff14;
-        color: #39ff14;
-        padding: 8px;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-      }
-
-      #chat-input:focus {
-        outline: none;
-        border: 1px solid #39ff14;
-        box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
-      }
-
-      #chat-submit {
-        background-color: #39ff14;
-        color: black;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      #chat-submit:hover {
-        background-color: #2bff00;
-        box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
-      }
-
-      /* Repository carousel styles */
-      #repositories-container {
-        position: relative;
-        min-height: 500px; /* Reduced height */
-      }
-
-      #repositories-grid {
-        position: relative;
-        transition: transform 0.5s ease-in-out;
-        display: grid;
-        gap: 1rem;
-      }
-
-      /* Mobile grid (1 column) */
-      @media (max-width: 640px) {
-        #repositories-grid {
-          grid-template-columns: 1fr;
-          grid-template-rows: repeat(3, auto);
-        }
-        #repositories-container {
-          min-height: 400px;
-        }
-      }
-
-      /* Tablet grid (2 columns) */
-      @media (min-width: 641px) and (max-width: 1024px) {
-        #repositories-grid {
-          grid-template-columns: repeat(2, 1fr);
-          grid-template-rows: repeat(2, auto);
-        }
-        #repositories-container {
-          min-height: 450px;
-        }
-      }
-
-      /* Desktop grid (3 columns) */
-      @media (min-width: 1025px) {
-        #repositories-grid {
-          grid-template-columns: repeat(3, 1fr);
-          grid-template-rows: repeat(2, auto);
-        }
-      }
-
-      .repo-card {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-      }
-
-      .repo-card.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* Mobile-friendly card styles */
-      .repo-card-content {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .repo-card-description {
-        flex-grow: 1;
-        overflow-y: auto;
-      }
-
-      /* Navigation buttons responsive styles */
-      .nav-buttons {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        margin-top: 1.5rem;
-        padding: 0 1rem;
-      }
-
-      @media (max-width: 640px) {
-        .nav-buttons {
-          flex-direction: column;
-          align-items: stretch;
-        }
-        .nav-buttons button {
-          width: 100%;
-          margin-bottom: 0.5rem;
-        }
-      }
-    </style>
   </head>
-  <body class="bg-black text-green-400">
-    <!-- Skip to main content link for accessibility -->
+  <body>
+    <!-- Skip to main content -->
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-black focus:text-green-400 z-50"
+      class="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-slate-900 focus:text-white z-50"
       >Skip to main content</a
     >
+
+    <!-- Custom cursor -->
     <div class="custom-cursor" aria-hidden="true"></div>
     <div class="loading-bar" aria-hidden="true"></div>
-    <div id="particles-js" aria-hidden="true"></div>
-    <!-- Game Overlay -->
+
+    <!-- Ambient background orbs -->
+    <div class="bg-orb bg-orb-1" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb-3" aria-hidden="true"></div>
+
+    <!-- Snake Game Overlay -->
     <div
       id="game-overlay"
-      class="fixed inset-0 bg-black bg-opacity-95 z-[1000] hidden flex items-center justify-center"
+      class="fixed inset-0 bg-black/95 z-[1000] hidden flex items-center justify-center"
     >
       <button
         id="close-game"
-        class="game-close-btn absolute top-4 right-4 text-green-400 hover:text-green-300"
+        class="game-close-btn absolute top-4 right-4"
+        aria-label="Close game"
       >
         &times;
       </button>
-      <canvas id="snake-canvas" class="border border-green-400"></canvas>
+      <canvas
+        id="snake-canvas"
+        class="rounded-xl border border-violet-500/30"
+      ></canvas>
     </div>
-    <canvas id="matrix-rain" class="matrix-rain"></canvas>
-    <nav class="fixed top-0 w-full bg-black border-b border-green-500 z-50">
-      <div class="container mx-auto px-4 py-3">
-        <div class="flex justify-between items-center">
-          <a
-            href="#"
-            class="text-xl font-bold typing-effect hover:text-green-300 transition-colors"
-            >Alvin Rahul Chauhan</a
-          >
-          <div class="hidden md:flex space-x-6">
-            <a href="#about" class="hover:text-green-300 transition-colors"
-              >About</a
-            >
-            <a href="#experience" class="hover:text-green-300 transition-colors"
-              >Experience</a
-            >
-            <a href="#skills" class="hover:text-green-300 transition-colors"
-              >Skills</a
-            >
-            <a href="#portfolio" class="hover:text-green-300 transition-colors"
-              >Portfolio</a
-            >
-            <a href="#contact" class="hover:text-green-300 transition-colors"
-              >Contact</a
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed top-0 w-full z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="nav-shell">
+          <a href="#" class="nav-brand">
+            <span class="nav-brand-avatar-wrap">
+              <img
+                src="https://github.com/arahulc91.png?size=96"
+                alt="Alvin Rahul Chauhan GitHub profile photo"
+                class="nav-brand-avatar"
+                loading="eager"
+                decoding="async"
+              />
+            </span>
+          </a>
+
+          <div class="hidden md:flex nav-rail">
+            <a href="#about" class="nav-link">About</a>
+            <a href="#experience" class="nav-link">Journey</a>
+            <a href="#skills" class="nav-link">Capabilities</a>
+            <a href="#portfolio" class="nav-link">Selected Work</a>
+            <a href="#contact" class="nav-link">Contact</a>
+          </div>
+
+          <div class="hidden md:flex nav-side">
+            <div class="nav-status" aria-label="Availability status">
+              <span class="nav-status-dot"></span>
+              <span class="nav-status-copy">
+                <span class="nav-status-label">Available</span>
+                <span class="nav-status-value">for select builds</span>
+              </span>
+            </div>
+            <a href="mailto:arahuc91@gmail.com" class="nav-side-link"
+              >Say hello</a
             >
           </div>
-          <!-- Mobile menu button -->
+
           <button
-            class="md:hidden text-green-400 hover:text-green-300"
+            class="md:hidden text-slate-400 hover:text-white transition-colors nav-menu-button justify-self-end"
             id="mobile-menu-button"
+            aria-label="Toggle menu"
+            aria-expanded="false"
           >
             <svg
               class="h-6 w-6"
@@ -485,310 +147,441 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M4 6h16M4 12h16m-7 6h7"
-              ></path>
+              />
             </svg>
           </button>
         </div>
         <!-- Mobile menu -->
-        <div class="md:hidden hidden" id="mobile-menu">
-          <div class="px-2 pt-2 pb-3 space-y-1">
-            <a
-              href="#about"
-              class="block px-3 py-2 hover:text-green-300 transition-colors"
-              >About</a
-            >
-            <a
-              href="#experience"
-              class="block px-3 py-2 hover:text-green-300 transition-colors"
-              >Experience</a
-            >
-            <a
-              href="#skills"
-              class="block px-3 py-2 hover:text-green-300 transition-colors"
-              >Skills</a
-            >
-            <a
-              href="#portfolio"
-              class="block px-3 py-2 hover:text-green-300 transition-colors"
-              >Portfolio</a
-            >
-            <a
-              href="#contact"
-              class="block px-3 py-2 hover:text-green-300 transition-colors"
-              >Contact</a
+        <div class="md:hidden hidden pb-4" id="mobile-menu">
+          <div class="mobile-menu-panel flex flex-col space-y-1 pt-1">
+            <a href="#about" class="mobile-nav-link">About</a>
+            <a href="#experience" class="mobile-nav-link">Journey</a>
+            <a href="#skills" class="mobile-nav-link">Capabilities</a>
+            <a href="#portfolio" class="mobile-nav-link">Selected Work</a>
+            <a href="#contact" class="mobile-nav-link">Contact</a>
+            <a href="mailto:arahuc91@gmail.com" class="mobile-nav-link"
+              >Email</a
             >
           </div>
         </div>
       </div>
     </nav>
 
-    <main class="pt-16 crt-effect">
-      <!-- Hero Section -->
+    <main id="main">
+      <!-- ── Hero ─────────────────────────────────────────────── -->
       <section
-        class="relative h-screen flex items-center justify-center bg-black"
+        class="hero-section relative min-h-screen flex items-center justify-center overflow-hidden"
       >
-        <div id="particles-js"></div>
         <div
-          class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center hero-content"
+          id="particles-js"
+          class="absolute inset-0"
+          aria-hidden="true"
+        ></div>
+        <div
+          class="hero-content relative z-10 text-center px-4 max-w-5xl mx-auto"
         >
-          <h1
-            class="text-4xl sm:text-6xl font-bold text-green-400 mb-4 glitch-text"
+          <p
+            class="text-sm font-mono tracking-widest uppercase mb-6 text-teal-400 fade-up"
           >
-            > Senior Software Engineer_
+            Hello, I&apos;m
+          </p>
+          <h1
+            class="font-black mb-4 gradient-text fade-up"
+            style="font-size: clamp(2.8rem, 9vw, 6rem); line-height: 1.05"
+          >
+            Alvin Rahul<br />Chauhan
           </h1>
           <p
-            class="text-xl text-green-500 mb-8 font-mono terminal-text hero-subtitle"
+            class="text-xl sm:text-2xl text-slate-300 font-semibold mb-3 fade-up"
           >
-            {Full_Stack_Developer && AI_Enthusiast}
+            Senior Software Engineer
+          </p>
+          <p
+            class="hero-subtitle text-slate-400 font-mono text-sm mb-10 fade-up"
+            style="min-height: 1.5rem"
+          >
+            Full Stack Developer &amp; AI Enthusiast &bull; Based in Fiji
           </p>
           <div
-            class="flex flex-col sm:flex-row items-center justify-center gap-4"
+            class="flex flex-col sm:flex-row gap-4 justify-center items-center fade-up"
           >
-            <button id="click-me-btn" class="glitch-button">
-              <span>> Click_Me()</span>
+            <button id="click-me-btn" class="btn-primary">
+              &#10024; Say Hello
             </button>
-            <button id="play-snake" class="glitch-button">
-              <span>> Play_Snake()</span>
+            <a href="#portfolio" class="btn-secondary">View My Work &rarr;</a>
+            <button id="play-snake" class="btn-ghost">
+              &#x1F40D; Play Snake
             </button>
           </div>
         </div>
+        <!-- Scroll indicator -->
+        <div
+          class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 scroll-indicator"
+          aria-hidden="true"
+        >
+          <div class="scroll-dot"></div>
+        </div>
       </section>
 
-      <!-- About Section -->
-      <section id="about" class="py-12 sm:py-20 bg-black">
+      <!-- ── About ─────────────────────────────────────────────── -->
+      <section id="about" class="py-24 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2
-            class="text-2xl sm:text-3xl font-bold text-green-400 mb-4 sm:mb-8 hacking-animation"
-          >
-            > whoami
-          </h2>
-          <div class="code-block">
-            <pre class="code-typing">
+          <h2 class="section-title fade-up">About Me</h2>
+          <div class="grid md:grid-cols-2 gap-8 mt-12">
+            <!-- Bio card -->
+            <div class="glass-card p-8 fade-up">
+              <p class="text-slate-300 leading-relaxed mb-5">
+                Experienced software engineer with a passion for creating
+                innovative solutions. I specialise in building scalable,
+                performant full-stack applications and leading development teams
+                to deliver high-quality software.
+              </p>
+              <p class="text-slate-400 leading-relaxed">
+                When I&apos;m not writing code, I&apos;m exploring the latest in
+                AI, tinkering with side projects, or enjoying the beautiful
+                islands of Fiji.
+              </p>
+              <div class="mt-8 grid grid-cols-2 gap-6">
+                <div>
+                  <p class="text-3xl font-black gradient-text">10+</p>
+                  <p class="text-slate-500 text-sm mt-1">Years Experience</p>
+                </div>
+                <div>
+                  <p class="text-3xl font-black gradient-text">20+</p>
+                  <p class="text-slate-500 text-sm mt-1">Projects Shipped</p>
+                </div>
+                <div>
+                  <p class="text-3xl font-black gradient-text">5+</p>
+                  <p class="text-slate-500 text-sm mt-1">Companies</p>
+                </div>
+                <div>
+                  <p class="text-3xl font-black gradient-text">&#8734;</p>
+                  <p class="text-slate-500 text-sm mt-1">Curiosity</p>
+                </div>
+              </div>
+            </div>
+            <!-- Code card -->
+            <div class="glass-card code-card p-8 fade-up">
+              <div class="flex items-center gap-2 mb-5">
+                <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+                <span class="ml-2 text-slate-500 text-xs font-mono"
+                  >engineer.ts</span
+                >
+              </div>
+              <pre class="code-typing">
 class SoftwareEngineer {
-    constructor() {
-        this.name = "Alvin Rahul Chauhan";
-        this.role = "Senior Software Engineer";
-        this.location = "Fiji";
-        this.interests = ["Coding", "Hacking", "Tinkering", "Gaming"];
-    }
+  name = "Alvin Rahul Chauhan";
+  role = "Senior SWE";
+  location = "Fiji &#x1F334;";
+  interests = [
+    "Coding",
+    "AI / ML",
+    "Tinkering",
+    "Gaming",
+  ];
+
+  currentlyAt = "KPMG Australia";
+
+  greet() {
+    return `Hi, I&apos;m ${this.name}!`;
+  }
 }</pre
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Experience ─────────────────────────────────────────── -->
+      <section id="experience" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="section-title fade-up">Experience</h2>
+          <div class="mt-12 space-y-5">
+            <div
+              class="glass-card p-8 fade-up"
+              style="border-left: 3px solid #06b6d4"
             >
-          </div>
-          <div class="mt-8">
-            <p class="text-green-400 mb-4 terminal-text">
-              > Experienced software engineer with a passion for creating
-              innovative solutions
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Experience Section -->
-      <section id="experience" class="py-20 bg-black">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 class="text-3xl font-bold text-green-400 mb-8">
-            > cat experience.log
-          </h2>
-          <div class="space-y-8">
-            <!-- Rupeni AI -->
-            <div class="terminal-window p-6">
-              <h3 class="text-xl font-semibold text-green-400">
-                root@kpmg:~# Senior Software Engineer - KPMG Australia
-              </h3>
-              <p class="text-green-500">Present</p>
-              <ul class="mt-4 space-y-2 text-green-400 list-none">
-                <li>More things to come yet...</li>
-              </ul>
-            </div>
-
-            <!-- Previous Experience -->
-            <div class="terminal-window p-6">
-              <h3 class="text-xl font-semibold text-green-400">
-                root@previous-roles:~# ls -la
-              </h3>
-              <ul class="mt-4 space-y-4 text-green-400">
-                <li>Senior Software Engineer @ Global Bedbank (2024 - 2025)</li>
-                <li>
-                  > Application Developer @ FRIENDS Fiji (NGO) (2022 – 2023)
-                </li>
-                <li>
-                  > Application Developer @ Punjas Fiji Limited (2021 - 2022)
-                </li>
-                <li>
-                  > Freelance Developer @ Freelance.com and Upwork.com (2020 -
-                  2021)
-                </li>
-                <li>> Application Developer @ Framesoft AG (2017 - 2019)</li>
-                <li>> Application Developer @ Carpenters Fiji (2015 – 2017)</li>
-                <li>
-                  > Intern (PC Repairs and Junior Sales Representative) @
-                  Daltron Fiji Limited (2013 – 2015)
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Skills Section -->
-      <section id="skills" class="py-20 bg-black">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="terminal-window">
-            <div class="terminal-header">
-              <div class="terminal-dots">
-                <div class="terminal-dot"></div>
-                <div class="terminal-dot"></div>
-                <div class="terminal-dot"></div>
-              </div>
-            </div>
-            <div class="p-6">
-              <h2 class="text-3xl font-bold text-green-400 mb-8 flicker">
-                > ls -la skills/
-              </h2>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Development Languages -->
-                <div class="terminal-window p-6">
-                  <h3 class="text-lg font-semibold text-green-400 mb-4">
-                    > Languages
-                  </h3>
-                  <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1 skill-tag">Go</span>
-                    <span class="px-3 py-1 skill-tag">JavaScript</span>
-                    <span class="px-3 py-1 skill-tag">TypeScript</span>
-                    <span class="px-3 py-1 skill-tag">React</span>
-                    <span class="px-3 py-1 skill-tag">Flutter</span>
-                    <span class="px-3 py-1 skill-tag">Python</span>
-                  </div>
-                </div>
-
-                <!-- Database Systems -->
-                <div class="terminal-window p-6">
-                  <h3 class="text-lg font-semibold text-green-400 mb-4">
-                    > Databases
-                  </h3>
-                  <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1 skill-tag">PostgreSQL</span>
-                    <span class="px-3 py-1 skill-tag">MSSQL</span>
-                    <span class="px-3 py-1 skill-tag">MySQL</span>
-                    <span class="px-3 py-1 skill-tag">MongoDB</span>
-                  </div>
-                </div>
-
-                <!-- Cloud & Tools -->
-                <div class="terminal-window p-6">
-                  <h3 class="text-lg font-semibold text-green-400 mb-4">
-                    > DevOps
-                  </h3>
-                  <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1 skill-tag">AWS</span>
-                    <span class="px-3 py-1 skill-tag">GCP</span>
-                    <span class="px-3 py-1 skill-tag">Docker</span>
-                    <span class="px-3 py-1 skill-tag">CI/CD</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Portfolio Section -->
-      <section id="portfolio" class="py-20 bg-black overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 class="text-3xl font-bold text-green-400 mb-8 flicker">
-            > ls -la github/repositories/
-          </h2>
-          <div class="relative">
-            <div id="repositories-container" class="overflow-hidden">
-              <div id="repositories-grid">
-                <!-- Repositories will be loaded here dynamically -->
-                <div
-                  class="terminal-window p-6 flex items-center justify-center"
-                >
-                  <div
-                    class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-400"
-                  ></div>
-                </div>
-              </div>
-            </div>
-            <div class="nav-buttons">
-              <button
-                id="prev-repos"
-                class="px-4 py-2 neon-border text-green-400 hover:text-green-300 transition-all duration-300"
+              <div
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2"
               >
-                > Previous()
-              </button>
-              <button
-                id="next-repos"
-                class="px-4 py-2 neon-border text-green-400 hover:text-green-300 transition-all duration-300"
-              >
-                > Next()
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contact Section -->
-      <section id="contact" class="py-20 bg-black">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="terminal-window">
-            <div class="terminal-header">
-              <div class="terminal-dots">
-                <div class="terminal-dot"></div>
-                <div class="terminal-dot"></div>
-                <div class="terminal-dot"></div>
-              </div>
-            </div>
-            <div class="p-6">
-              <h2 class="text-3xl font-bold text-green-400 mb-8">
-                > Contact_Init.sh
-              </h2>
-              <div class="flex flex-col items-center justify-center space-y-4">
-                <a
-                  href="mailto:arahuc91@gmail.com"
-                  class="text-green-400 hover:text-green-300"
+                <h3 class="text-white font-bold text-lg">
+                  Senior Software Engineer
+                </h3>
+                <span class="text-teal-400 font-mono text-sm mt-1 sm:mt-0"
+                  >Present</span
                 >
-                  > echo "arahuc91@gmail.com"
-                </a>
-                <p class="text-green-500">> Phone: +679 8363371</p>
-                <p class="text-green-500">
-                  > Location: Drasa Dam, Lautoka, Fiji
+              </div>
+              <p class="text-slate-400 font-semibold mb-4">KPMG Australia</p>
+            </div>
+
+            <div
+              class="glass-card p-8 fade-up"
+              style="border-left: 3px solid #8b5cf6"
+            >
+              <div
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2"
+              >
+                <h3 class="text-white font-bold text-lg">
+                  Senior Software Engineer
+                </h3>
+                <span class="text-violet-400 font-mono text-sm mt-1 sm:mt-0"
+                  >2024 &ndash; 2025</span
+                >
+              </div>
+              <p class="text-slate-400 font-semibold">Global Bedbank</p>
+            </div>
+
+            <div
+              class="glass-card p-8 fade-up"
+              style="border-left: 3px solid #f59e0b"
+            >
+              <div
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2"
+              >
+                <h3 class="text-white font-bold text-lg">
+                  Application Developer
+                </h3>
+                <span class="text-amber-400 font-mono text-sm mt-1 sm:mt-0"
+                  >2022 &ndash; 2023</span
+                >
+              </div>
+              <p class="text-slate-400 font-semibold">FRIENDS Fiji (NGO)</p>
+            </div>
+
+            <div
+              class="glass-card p-8 fade-up"
+              style="border-left: 3px solid #ec4899"
+            >
+              <div
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2"
+              >
+                <h3 class="text-white font-bold text-lg">
+                  Application Developer
+                </h3>
+                <span class="text-pink-400 font-mono text-sm mt-1 sm:mt-0"
+                  >2021 &ndash; 2022</span
+                >
+              </div>
+              <p class="text-slate-400 font-semibold">Punjas Fiji Limited</p>
+            </div>
+
+            <div
+              class="glass-card p-8 fade-up"
+              style="border-left: 3px solid #475569"
+            >
+              <h3 class="text-white font-bold text-lg mb-5">Earlier Roles</h3>
+              <div class="space-y-3 text-sm text-slate-400">
+                <p class="flex gap-3">
+                  <span class="text-slate-500 font-mono shrink-0"
+                    >2020&ndash;21</span
+                  >
+                  Freelance Developer &mdash; Freelance.com &amp; Upwork
                 </p>
-                <div class="flex space-x-4">
-                  <a
-                    href="https://www.linkedin.com/in/alvin-rahul-chauhan/"
-                    target="_blank"
-                    class="text-green-400 hover:text-green-300"
+                <p class="flex gap-3">
+                  <span class="text-slate-500 font-mono shrink-0"
+                    >2017&ndash;19</span
                   >
-                    <span class="sr-only">LinkedIn</span>
-                    <svg
-                      class="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
-                      />
-                    </svg>
-                  </a>
-                  <a
-                    href="https://github.com/arahulc91"
-                    target="_blank"
-                    class="text-green-400 hover:text-green-300"
+                  Application Developer &mdash; Framesoft AG
+                </p>
+                <p class="flex gap-3">
+                  <span class="text-slate-500 font-mono shrink-0"
+                    >2015&ndash;17</span
                   >
-                    <span class="sr-only">GitHub</span>
-                    <svg
-                      class="h-6 w-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-                      />
-                    </svg>
-                  </a>
-                </div>
+                  Application Developer &mdash; Carpenters Fiji
+                </p>
+                <p class="flex gap-3">
+                  <span class="text-slate-500 font-mono shrink-0"
+                    >2013&ndash;15</span
+                  >
+                  Intern (PC Repairs &amp; Sales) &mdash; Daltron Fiji Limited
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Skills ─────────────────────────────────────────────── -->
+      <section id="skills" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="section-title fade-up">Skills</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            <div class="glass-card p-8 fade-up">
+              <h3
+                class="text-xs font-mono text-teal-400 uppercase tracking-widest mb-6"
+              >
+                Languages &amp; Frameworks
+              </h3>
+              <div class="flex flex-wrap gap-3">
+                <span class="skill-tag">Go</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">TypeScript</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">Flutter</span>
+                <span class="skill-tag">Python</span>
+              </div>
+            </div>
+
+            <div class="glass-card p-8 fade-up">
+              <h3
+                class="text-xs font-mono text-violet-400 uppercase tracking-widest mb-6"
+              >
+                Databases
+              </h3>
+              <div class="flex flex-wrap gap-3">
+                <span class="skill-tag violet">PostgreSQL</span>
+                <span class="skill-tag violet">MSSQL</span>
+                <span class="skill-tag violet">MySQL</span>
+                <span class="skill-tag violet">MongoDB</span>
+              </div>
+            </div>
+
+            <div class="glass-card p-8 fade-up">
+              <h3
+                class="text-xs font-mono text-amber-400 uppercase tracking-widest mb-6"
+              >
+                DevOps &amp; Cloud
+              </h3>
+              <div class="flex flex-wrap gap-3">
+                <span class="skill-tag amber">AWS</span>
+                <span class="skill-tag amber">GCP</span>
+                <span class="skill-tag amber">Docker</span>
+                <span class="skill-tag amber">CI/CD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Portfolio ──────────────────────────────────────────── -->
+      <section id="portfolio" class="py-24 relative z-10 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="section-title fade-up">Portfolio</h2>
+          <p class="text-slate-400 text-sm mt-3 mb-12 fade-up">
+            A selection of my public work on GitHub.
+          </p>
+          <div id="repositories-container">
+            <div id="repositories-grid">
+              <div class="glass-card p-10 flex items-center justify-center">
+                <div
+                  class="w-8 h-8 border-2 border-t-violet-400 border-violet-400/20 rounded-full animate-spin"
+                ></div>
+              </div>
+            </div>
+            <div class="flex justify-center gap-4 mt-10">
+              <button id="prev-repos" class="btn-ghost text-sm">
+                &#8592; Previous
+              </button>
+              <button id="next-repos" class="btn-ghost text-sm">
+                Next &#8594;
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Contact ────────────────────────────────────────────── -->
+      <section id="contact" class="py-24 relative z-10">
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 class="section-title fade-up inline-block">Get In Touch</h2>
+          <p class="text-slate-400 mt-5 mb-12 fade-up">
+            I&apos;m always open to new opportunities and interesting
+            conversations. Feel free to reach out!
+          </p>
+          <div class="glass-card p-10 fade-up">
+            <div class="space-y-6">
+              <a
+                href="mailto:arahuc91@gmail.com"
+                class="flex items-center justify-center gap-3 text-slate-300 hover:text-teal-400 transition-colors"
+              >
+                <svg
+                  class="w-5 h-5 text-teal-400 shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                <span class="font-mono text-sm">arahuc91@gmail.com</span>
+              </a>
+              <div
+                class="flex items-center justify-center gap-3 text-slate-400"
+              >
+                <svg
+                  class="w-5 h-5 text-violet-400 shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+                <span class="font-mono text-sm">+679 8363371</span>
+              </div>
+              <div
+                class="flex items-center justify-center gap-3 text-slate-400"
+              >
+                <svg
+                  class="w-5 h-5 text-amber-400 shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                <span class="text-sm">Lautoka, Fiji &#x1F334;</span>
+              </div>
+              <div
+                class="border-t border-white/5 pt-6 flex items-center justify-center gap-8"
+              >
+                <a
+                  href="https://www.linkedin.com/in/alvin-rahul-chauhan/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="social-link"
+                  aria-label="LinkedIn"
+                >
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                    />
+                  </svg>
+                </a>
+                <a
+                  href="https://github.com/arahulc91"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="social-link"
+                  aria-label="GitHub"
+                >
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                    />
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
@@ -796,108 +589,290 @@ class SoftwareEngineer {
       </section>
     </main>
 
-    <footer class="bg-black text-green-400 py-8 border-t border-green-500">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p>2025 Alvin Rahul Chauhan. chmod 755 all_rights_reserved</p>
-      </div>
+    <footer
+      class="py-8 text-center relative z-10"
+      style="border-top: 1px solid rgba(255, 255, 255, 0.06)"
+    >
+      <p class="text-slate-500 text-sm">
+        &copy; 2025 Alvin Rahul Chauhan &mdash; Built with passion from Fiji
+        &#x1F334;
+      </p>
     </footer>
 
+    <!-- ── Chatbot ─────────────────────────────────────────────── -->
+    <div class="chatbot-toggle">
+      <div id="bot-model-container"></div>
+    </div>
+    <div class="chatbot-container">
+      <div class="chat-header">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div
+            style="
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              background: #06b6d4;
+              animation: pulse 2s infinite;
+            "
+          ></div>
+          <span style="font-weight: 600; color: #f1f5f9; font-size: 0.875rem"
+            >AI Assistant</span
+          >
+        </div>
+        <div class="chat-header-buttons">
+          <button class="minimize-chat" title="Minimize">_</button>
+          <button class="maximize-chat" title="Maximize">&#9633;</button>
+          <button class="close-chat" title="Close">&#x2715;</button>
+        </div>
+      </div>
+      <div id="chat-messages" class="chat-messages"></div>
+      <div class="chat-input-container">
+        <form id="chat-form">
+          <input
+            type="text"
+            id="chat-input"
+            placeholder="Ask me anything..."
+            autocomplete="off"
+          />
+          <button type="submit" id="chat-submit">Send</button>
+        </form>
+      </div>
+    </div>
+    <style>
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+    </style>
+
+    <script src="js/chatbot.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.159.0/examples/jsm/",
+          "three/examples/": "https://unpkg.com/three@0.159.0/examples/"
+        }
+      }
+    </script>
+    <!-- Three.js Robot face for chatbot toggle -->
+    <script type="module">
+      import * as THREE from "three";
+
+      const container = document.getElementById("bot-model-container");
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: "high-performance",
+      });
+
+      renderer.domElement.style.background = "transparent";
+      container.style.background = "transparent";
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(100, 100);
+      renderer.setClearColor(0x000000, 0);
+      container.style.position = "relative";
+      container.style.zIndex = "1000";
+      container.appendChild(renderer.domElement);
+      camera.position.z = 5;
+
+      const faceGroup = new THREE.Group();
+      const faceGeometry = new THREE.BoxGeometry(3, 4, 0.5);
+      const faceMaterial = new THREE.MeshBasicMaterial({
+        color: 0x0d0b24,
+        transparent: true,
+        opacity: 0.8,
+      });
+      const face = new THREE.Mesh(faceGeometry, faceMaterial);
+
+      const cornerRadius = 0.2;
+      const cornerGeometry = new THREE.SphereGeometry(cornerRadius, 8, 8);
+      [
+        [-1.5, 2, 0],
+        [1.5, 2, 0],
+        [-1.5, -2, 0],
+        [1.5, -2, 0],
+      ].forEach((pos) => {
+        const corner = new THREE.Mesh(cornerGeometry, faceMaterial);
+        corner.position.set(...pos);
+        faceGroup.add(corner);
+      });
+      faceGroup.add(face);
+
+      const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0x8b5cf6 });
+      const leftEye = new THREE.Mesh(
+        new THREE.CircleGeometry(0.4, 32),
+        eyeMaterial,
+      );
+      const rightEye = new THREE.Mesh(
+        new THREE.CircleGeometry(0.4, 32),
+        eyeMaterial,
+      );
+      leftEye.position.set(-0.8, 0.5, 0.3);
+      rightEye.position.set(0.8, 0.5, 0.3);
+      faceGroup.add(leftEye);
+      faceGroup.add(rightEye);
+
+      const mouthGeometry = new THREE.BufferGeometry();
+      const mouthMaterial = new THREE.LineBasicMaterial({ color: 0x06b6d4 });
+      const mouthPoints = new Float32Array([
+        -1, -0.5, 0.3, -0.5, -0.8, 0.3, 0.5, -0.8, 0.3, 1, -0.5, 0.3,
+      ]);
+      mouthGeometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(mouthPoints, 3),
+      );
+      const mouth = new THREE.Line(mouthGeometry, mouthMaterial);
+      faceGroup.add(mouth);
+      scene.add(faceGroup);
+
+      const expressions = {
+        neutral: () => {
+          mouth.geometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(
+              new Float32Array([
+                -1, -0.5, 0.3, -0.5, -0.7, 0.3, 0.5, -0.7, 0.3, 1, -0.5, 0.3,
+              ]),
+              3,
+            ),
+          );
+          leftEye.scale.set(1, 1, 1);
+          rightEye.scale.set(1, 1, 1);
+        },
+        happy: () => {
+          mouth.geometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(
+              new Float32Array([
+                -1, -0.5, 0.3, -0.5, -0.2, 0.3, 0.5, -0.2, 0.3, 1, -0.5, 0.3,
+              ]),
+              3,
+            ),
+          );
+          leftEye.scale.set(1, 0.7, 1);
+          rightEye.scale.set(1, 0.7, 1);
+        },
+        sad: () => {
+          mouth.geometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(
+              new Float32Array([
+                -1, -0.8, 0.3, -0.5, -1, 0.3, 0.5, -1, 0.3, 1, -0.8, 0.3,
+              ]),
+              3,
+            ),
+          );
+          leftEye.scale.set(1, 0.5, 1);
+          rightEye.scale.set(1, 0.5, 1);
+        },
+        angry: () => {
+          mouth.geometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(
+              new Float32Array([
+                -1, -0.8, 0.3, -0.5, -0.6, 0.3, 0.5, -0.6, 0.3, 1, -0.8, 0.3,
+              ]),
+              3,
+            ),
+          );
+          leftEye.scale.set(0.7, 1, 1);
+          rightEye.scale.set(0.7, 1, 1);
+        },
+      };
+
+      let expressionTimer = 0;
+      function animate() {
+        requestAnimationFrame(animate);
+        const now = Date.now();
+        if (now - expressionTimer > 3000) {
+          const list = ["neutral", "happy", "sad", "angry"];
+          expressions[list[Math.floor(Math.random() * list.length)]]();
+          expressionTimer = now;
+        }
+        faceGroup.position.y = Math.sin(Date.now() * 0.002) * 0.1;
+        faceGroup.rotation.y = Math.sin(Date.now() * 0.001) * 0.1;
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      window.addEventListener("resize", () => renderer.setSize(100, 100));
+      container.addEventListener("click", () => {
+        expressions.happy();
+        setTimeout(() => expressions.neutral(), 1000);
+      });
+      container.addEventListener("mouseover", () => expressions.happy());
+      container.addEventListener("mouseout", () => expressions.neutral());
+    </script>
+
+    <!-- Confetti on page load -->
     <script>
-      // Launch confetti from bot position
       function fireConfetti() {
         const defaults = {
-          origin: { x: 0.9, y: 0.9 }, // Bottom right corner
-          colors: ["#39FF14", "#FF0000", "#FFFF00", "#00FFFF"], // Neon green, red, yellow, blue
-          gravity: 0.7, // Reduced gravity for higher rise
+          origin: { x: 0.5, y: 0.6 },
+          colors: ["#06b6d4", "#8b5cf6", "#ec4899", "#f59e0b"],
+          gravity: 0.8,
         };
-
-        // Fire in multiple directions
-        function fireAtAngle(angle, velocity) {
+        function fire(angle, velocity) {
           confetti({
             ...defaults,
-            particleCount: 15,
+            particleCount: 12,
             scalar: 1.2,
-            spread: 50,
+            spread: 55,
             startVelocity: velocity,
             ticks: 300,
-            angle: angle,
+            angle,
           });
         }
-
-        // Create a circular burst effect
-        const angles = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
-        angles.forEach((angle, i) => {
-          setTimeout(() => {
-            fireAtAngle(angle, 35);
-          }, i * 50); // Stagger the bursts
+        [0, 45, 90, 135, 180, 225, 270, 315].forEach((angle, i) => {
+          setTimeout(() => fire(angle, 32), i * 60);
         });
-
-        // Add some random bursts for more chaos
-        setTimeout(() => {
-          confetti({
-            ...defaults,
-            particleCount: 40,
-            spread: 80,
-            startVelocity: 45,
-            ticks: 400,
-            angle: 135,
-          });
-        }, 200);
-
-        setTimeout(() => {
-          confetti({
-            ...defaults,
-            particleCount: 30,
-            spread: 90,
-            startVelocity: 40,
-            ticks: 400,
-            angle: 225,
-          });
-        }, 400);
+        setTimeout(
+          () =>
+            confetti({
+              ...defaults,
+              particleCount: 50,
+              spread: 90,
+              startVelocity: 48,
+              ticks: 400,
+              angle: 90,
+            }),
+          200,
+        );
       }
-
-      // Fire the confetti when page loads
       fireConfetti();
     </script>
 
+    <!-- Main initialisation -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Optimize particles.js configuration
+        // Particles - subtle white/teal dots
         particlesJS("particles-js", {
           particles: {
-            number: {
-              value: 40,
-              density: {
-                enable: true,
-                value_area: 800,
-              },
-            },
-            color: {
-              value: "#00ff00",
-            },
-            shape: {
-              type: "circle",
-            },
-            opacity: {
-              value: 0.5,
-              random: false,
-            },
-            size: {
-              value: 3,
-              random: true,
-            },
+            number: { value: 50, density: { enable: true, value_area: 900 } },
+            color: { value: ["#06b6d4", "#8b5cf6", "#ffffff"] },
+            shape: { type: "circle" },
+            opacity: { value: 0.35, random: true },
+            size: { value: 2, random: true },
             line_linked: {
               enable: true,
-              distance: 150,
-              color: "#00ff00",
-              opacity: 0.4,
+              distance: 140,
+              color: "#8b5cf6",
+              opacity: 0.12,
               width: 1,
             },
             move: {
               enable: true,
-              speed: 1.5,
+              speed: 0.8,
               direction: "none",
-              random: false,
+              random: true,
               straight: false,
               out_mode: "out",
               bounce: false,
@@ -906,63 +881,57 @@ class SoftwareEngineer {
           interactivity: {
             detect_on: "canvas",
             events: {
-              onhover: {
-                enable: true,
-                mode: "repulse",
-              },
-              onclick: {
-                enable: true,
-                mode: "push",
-              },
+              onhover: { enable: true, mode: "repulse" },
+              onclick: { enable: true, mode: "push" },
               resize: true,
             },
           },
           retina_detect: true,
         });
 
-        // Optimize cursor movement using requestAnimationFrame
+        // Scroll reveal
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) e.target.classList.add("visible");
+            });
+          },
+          { threshold: 0.1 },
+        );
+        document
+          .querySelectorAll(".fade-up")
+          .forEach((el) => observer.observe(el));
+
+        // Custom cursor
         const cursor = document.querySelector(".custom-cursor");
-        let mouseX = 0;
-        let mouseY = 0;
-        let currentX = 0;
-        let currentY = 0;
-        let lastTrailTime = 0;
-        const trailDelay = 50; // Delay between trail elements in milliseconds
+        let mouseX = 0,
+          mouseY = 0,
+          curX = 0,
+          curY = 0,
+          lastTrail = 0;
 
-        function createTrailElement(x, y) {
-          const trail = document.createElement("div");
-          trail.className = "cursor-trail";
-          trail.textContent = Math.random() < 0.5 ? "0" : "1";
-          trail.style.left = x + "px";
-          trail.style.top = y + "px";
-          document.body.appendChild(trail);
-
-          // Remove the trail element after animation
-          trail.addEventListener("animationend", () => {
-            document.body.removeChild(trail);
-          });
+        function createTrail(x, y) {
+          const t = document.createElement("div");
+          t.className = "cursor-trail";
+          t.style.left = x + "px";
+          t.style.top = y + "px";
+          document.body.appendChild(t);
+          t.addEventListener("animationend", () => t.remove());
         }
 
-        function updateCursor() {
-          const dx = mouseX - currentX;
-          const dy = mouseY - currentY;
-
-          currentX += dx * 0.2;
-          currentY += dy * 0.2;
-
-          cursor.style.transform = `translate(${currentX}px, ${currentY}px)`;
-
-          // Create trail with throttling
+        function animateCursor() {
+          curX += (mouseX - curX) * 0.25;
+          curY += (mouseY - curY) * 0.25;
+          cursor.style.transform = `translate(${curX}px, ${curY}px)`;
           const now = Date.now();
           if (
-            now - lastTrailTime > trailDelay &&
-            (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1)
+            now - lastTrail > 60 &&
+            (Math.abs(mouseX - curX) > 1 || Math.abs(mouseY - curY) > 1)
           ) {
-            createTrailElement(currentX, currentY);
-            lastTrailTime = now;
+            createTrail(curX, curY);
+            lastTrail = now;
           }
-
-          requestAnimationFrame(updateCursor);
+          requestAnimationFrame(animateCursor);
         }
 
         document.addEventListener(
@@ -971,95 +940,136 @@ class SoftwareEngineer {
             mouseX = e.clientX;
             mouseY = e.clientY;
           },
-          { passive: true }
+          { passive: true },
+        );
+        requestAnimationFrame(animateCursor);
+
+        const isCoarsePointer = window.matchMedia(
+          "(hover: none) and (pointer: coarse)",
+        ).matches;
+
+        if (isCoarsePointer) {
+          cursor.style.display = "none";
+          document.body.classList.add("touch-device");
+        } else {
+          document.body.classList.remove("touch-device");
+          cursor.style.display = "block";
+        }
+
+        document.addEventListener(
+          "mouseenter",
+          () => (cursor.style.display = "block"),
+          { passive: true },
+        );
+        document.addEventListener(
+          "mouseleave",
+          () => (cursor.style.display = "none"),
+          { passive: true },
         );
 
-        requestAnimationFrame(updateCursor);
-
-        // Mobile menu toggle with optimized event listeners
-        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        // Mobile menu
+        const menuBtn = document.getElementById("mobile-menu-button");
         const mobileMenu = document.getElementById("mobile-menu");
 
-        if (mobileMenuButton && mobileMenu) {
-          mobileMenuButton.addEventListener(
+        if (menuBtn && mobileMenu) {
+          menuBtn.addEventListener(
             "click",
             () => {
-              mobileMenu.classList.toggle("hidden");
+              const isHidden = mobileMenu.classList.toggle("hidden");
+              menuBtn.setAttribute("aria-expanded", String(!isHidden));
             },
-            { passive: true }
+            { passive: true },
           );
-
-          // Close mobile menu when clicking a link
-          const mobileMenuLinks = mobileMenu.querySelectorAll("a");
-          mobileMenuLinks.forEach((link) => {
-            link.addEventListener(
+          mobileMenu.querySelectorAll("a").forEach((a) =>
+            a.addEventListener(
               "click",
               () => {
                 mobileMenu.classList.add("hidden");
+                menuBtn.setAttribute("aria-expanded", "false");
               },
-              { passive: true }
-            );
-          });
-
-          // Close mobile menu when clicking outside
+              { passive: true },
+            ),
+          );
           document.addEventListener(
             "click",
             (e) => {
               if (
                 !mobileMenu.contains(e.target) &&
-                !mobileMenuButton.contains(e.target)
+                !menuBtn.contains(e.target)
               ) {
                 mobileMenu.classList.add("hidden");
+                menuBtn.setAttribute("aria-expanded", "false");
               }
             },
-            { passive: true }
+            { passive: true },
           );
         }
 
-        // Hide custom cursor on touch devices
-        if ("ontouchstart" in window) {
-          cursor.style.display = "none";
-          document.body.style.cursor = "auto";
-        } else {
-          document.body.style.cursor = "none";
+        const trackedSectionIds = [
+          "about",
+          "experience",
+          "skills",
+          "portfolio",
+          "contact",
+        ];
+        const trackedSections = trackedSectionIds
+          .map((id) => document.getElementById(id))
+          .filter(Boolean);
+        const navSectionLinks = Array.from(
+          document.querySelectorAll(
+            '.nav-link[href^="#"], .mobile-nav-link[href^="#"]',
+          ),
+        );
+
+        function setActiveNav(sectionId) {
+          navSectionLinks.forEach((link) => {
+            const isActive = link.getAttribute("href") === `#${sectionId}`;
+            link.classList.toggle("is-active", isActive);
+            if (isActive) {
+              link.setAttribute("aria-current", "page");
+            } else {
+              link.removeAttribute("aria-current");
+            }
+          });
         }
 
-        // Show/hide cursor events
-        document.addEventListener(
-          "mouseenter",
-          () => {
-            cursor.style.display = "block";
-          },
-          { passive: true }
-        );
+        function updateActiveNav() {
+          const nav = document.querySelector("nav");
+          const navHeight = nav ? nav.offsetHeight : 0;
+          const scrollAnchor = window.scrollY + navHeight + 120;
+          let activeSectionId = "";
 
-        document.addEventListener(
-          "mouseleave",
-          () => {
-            cursor.style.display = "none";
-          },
-          { passive: true }
-        );
+          trackedSections.forEach((section) => {
+            if (scrollAnchor >= section.offsetTop) {
+              activeSectionId = section.id;
+            }
+          });
+
+          setActiveNav(activeSectionId);
+        }
+
+        updateActiveNav();
+        window.addEventListener("scroll", updateActiveNav, { passive: true });
+        window.addEventListener("resize", updateActiveNav, { passive: true });
       });
     </script>
+
+    <!-- Snake Game -->
     <script>
-      // Snake Game Initialization
       document.addEventListener("DOMContentLoaded", () => {
         const gameOverlay = document.getElementById("game-overlay");
         const canvas = document.getElementById("snake-canvas");
         const playButton = document.getElementById("play-snake");
         const closeButton = document.getElementById("close-game");
-        let game = null;
-        let gameLoop = null;
+        let game = null,
+          gameLoop = null;
 
         function resizeCanvas() {
-          const width = Math.min(window.innerWidth - 40, 800);
-          const height = Math.min(window.innerHeight - 40, 600);
-          canvas.width = width;
-          canvas.height = height;
+          canvas.width = Math.min(window.innerWidth - 40, 800);
+          canvas.height = Math.min(window.innerHeight - 40, 600);
           if (game) {
-            game.width = width;
-            game.height = height;
+            game.width = canvas.width;
+            game.height = canvas.height;
           }
         }
 
@@ -1076,296 +1086,58 @@ class SoftwareEngineer {
           gameOverlay.classList.remove("hidden");
           resizeCanvas();
           startGame();
-          // Add fade effect to hero content
           document.querySelector(".hero-content").style.opacity = "0.1";
         });
 
         closeButton.addEventListener("click", () => {
           gameOverlay.classList.add("hidden");
           if (gameLoop) clearInterval(gameLoop);
-          // Restore hero content
           document.querySelector(".hero-content").style.opacity = "1";
         });
 
         window.addEventListener("keydown", (e) => {
           if (!game) return;
-
-          switch (e.key) {
-            case "ArrowUp":
-              if (game.direction !== "down") game.direction = "up";
-              break;
-            case "ArrowDown":
-              if (game.direction !== "up") game.direction = "down";
-              break;
-            case "ArrowLeft":
-              if (game.direction !== "right") game.direction = "left";
-              break;
-            case "ArrowRight":
-              if (game.direction !== "left") game.direction = "right";
-              break;
-            case " ":
-              if (game.gameOver) {
-                game.restart();
-                clearInterval(gameLoop);
-                gameLoop = setInterval(() => {
-                  game.update();
-                  game.draw();
-                }, game.speed);
-              }
-              break;
+          if (e.key === "ArrowUp" && game.direction !== "down")
+            game.direction = "up";
+          if (e.key === "ArrowDown" && game.direction !== "up")
+            game.direction = "down";
+          if (e.key === "ArrowLeft" && game.direction !== "right")
+            game.direction = "left";
+          if (e.key === "ArrowRight" && game.direction !== "left")
+            game.direction = "right";
+          if (e.key === " " && game.gameOver) {
+            game.restart();
+            clearInterval(gameLoop);
+            gameLoop = setInterval(() => {
+              game.update();
+              game.draw();
+            }, game.speed);
           }
         });
 
         window.addEventListener("resize", resizeCanvas);
       });
     </script>
-    <script src="js/matrix-effects.js"></script>
-    <script src="js/hacker-effects.js"></script>
-    <script src="js/funny-messages.js"></script>
-    <!-- Chatbot UI -->
-    <div class="chatbot-toggle">
-      <div id="bot-model-container"></div>
-    </div>
-    <div class="chatbot-container">
-      <div class="chat-header">
-        <span>AI Assistant</span>
-        <div class="chat-header-buttons">
-          <button class="minimize-chat" title="Minimize">_</button>
-          <button class="maximize-chat" title="Maximize">□</button>
-          <button class="close-chat" title="Close">✕</button>
-        </div>
-      </div>
-      <div id="chat-messages" class="chat-messages"></div>
-      <div class="chat-input-container">
-        <form id="chat-form">
-          <input
-            type="text"
-            id="chat-input"
-            placeholder="Type your message..."
-            autocomplete="off"
-          />
-          <button type="submit" id="chat-submit">Send</button>
-        </form>
-      </div>
-    </div>
-    <script src="js/chatbot.js"></script>
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.159.0/examples/jsm/",
-          "three/examples/": "https://unpkg.com/three@0.159.0/examples/"
-        }
-      }
-    </script>
-    <script type="module">
-      import * as THREE from "three";
 
-      const container = document.getElementById("bot-model-container");
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({
-        alpha: true, // Enable transparency
-        antialias: true,
-        powerPreference: "high-performance", // Add this for better performance
-      });
-
-      // Add these lines to prevent white flash
-      renderer.domElement.style.background = "transparent";
-      container.style.background = "transparent";
-
-      // Set pixel ratio for better quality on high-DPI displays
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(100, 100);
-      renderer.setClearColor(0x000000, 0); // Set background to fully transparent
-
-      // Add this to ensure container is transparent
-      container.style.position = "relative";
-      container.style.zIndex = "1000";
-
-      container.appendChild(renderer.domElement);
-
-      camera.position.z = 5;
-
-      // Create robot face components
-      const faceGroup = new THREE.Group();
-
-      // Face base (rounded rectangle effect using multiple shapes)
-      const faceGeometry = new THREE.BoxGeometry(3, 4, 0.5);
-      const faceMaterial = new THREE.MeshBasicMaterial({
-        color: 0x111111,
-        transparent: true,
-        opacity: 0.7,
-      });
-      const face = new THREE.Mesh(faceGeometry, faceMaterial);
-
-      // Add rounded corners effect using additional spheres
-      const cornerRadius = 0.2;
-      const cornerGeometry = new THREE.SphereGeometry(cornerRadius, 8, 8);
-      const corners = [];
-      const cornerPositions = [
-        [-1.5, 2, 0],
-        [1.5, 2, 0], // Top corners
-        [-1.5, -2, 0],
-        [1.5, -2, 0], // Bottom corners
-      ];
-
-      cornerPositions.forEach((pos) => {
-        const corner = new THREE.Mesh(cornerGeometry, faceMaterial);
-        corner.position.set(...pos);
-        corners.push(corner);
-        faceGroup.add(corner);
-      });
-
-      faceGroup.add(face);
-
-      // Eyes
-      const eyeGeometry = new THREE.CircleGeometry(0.4, 32);
-      const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0x39ff14 });
-      const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-      const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
-      leftEye.position.set(-0.8, 0.5, 0.3);
-      rightEye.position.set(0.8, 0.5, 0.3);
-      faceGroup.add(leftEye);
-      faceGroup.add(rightEye);
-
-      // Mouth (will be animated)
-      const mouthGeometry = new THREE.BufferGeometry();
-      const mouthMaterial = new THREE.LineBasicMaterial({ color: 0x39ff14 });
-      const mouthPoints = new Float32Array([
-        -1, -0.5, 0.3, -0.5, -0.8, 0.3, 0.5, -0.8, 0.3, 1, -0.5, 0.3,
-      ]);
-      mouthGeometry.setAttribute(
-        "position",
-        new THREE.BufferAttribute(mouthPoints, 3)
-      );
-      const mouth = new THREE.Line(mouthGeometry, mouthMaterial);
-      faceGroup.add(mouth);
-
-      scene.add(faceGroup);
-
-      // Expressions
-      const expressions = {
-        neutral: () => {
-          const points = new Float32Array([
-            -1, -0.5, 0.3, -0.5, -0.7, 0.3, 0.5, -0.7, 0.3, 1, -0.5, 0.3,
-          ]);
-          mouth.geometry.setAttribute(
-            "position",
-            new THREE.BufferAttribute(points, 3)
-          );
-          leftEye.scale.set(1, 1, 1);
-          rightEye.scale.set(1, 1, 1);
-        },
-        happy: () => {
-          const points = new Float32Array([
-            -1, -0.5, 0.3, -0.5, -0.2, 0.3, 0.5, -0.2, 0.3, 1, -0.5, 0.3,
-          ]);
-          mouth.geometry.setAttribute(
-            "position",
-            new THREE.BufferAttribute(points, 3)
-          );
-          leftEye.scale.set(1, 0.7, 1);
-          rightEye.scale.set(1, 0.7, 1);
-        },
-        sad: () => {
-          const points = new Float32Array([
-            -1, -0.8, 0.3, -0.5, -1, 0.3, 0.5, -1, 0.3, 1, -0.8, 0.3,
-          ]);
-          mouth.geometry.setAttribute(
-            "position",
-            new THREE.BufferAttribute(points, 3)
-          );
-          leftEye.scale.set(1, 0.5, 1);
-          rightEye.scale.set(1, 0.5, 1);
-        },
-        angry: () => {
-          const points = new Float32Array([
-            -1, -0.8, 0.3, -0.5, -0.6, 0.3, 0.5, -0.6, 0.3, 1, -0.8, 0.3,
-          ]);
-          mouth.geometry.setAttribute(
-            "position",
-            new THREE.BufferAttribute(points, 3)
-          );
-          leftEye.scale.set(0.7, 1, 1);
-          rightEye.scale.set(0.7, 1, 1);
-        },
-      };
-
-      // Animation loop
-      let currentExpression = "neutral";
-      let expressionTimer = 0;
-      const expressionDuration = 3000; // Change expression every 3 seconds
-
-      function animate() {
-        requestAnimationFrame(animate);
-
-        // Change expression periodically
-        const now = Date.now();
-        if (now - expressionTimer > expressionDuration) {
-          const expressionList = ["neutral", "happy", "sad", "angry"];
-          currentExpression =
-            expressionList[Math.floor(Math.random() * expressionList.length)];
-          expressions[currentExpression]();
-          expressionTimer = now;
-        }
-
-        // Add subtle floating animation
-        faceGroup.position.y = Math.sin(Date.now() * 0.002) * 0.1;
-        faceGroup.rotation.y = Math.sin(Date.now() * 0.001) * 0.1;
-
-        renderer.render(scene, camera);
-      }
-
-      animate();
-
-      // Handle window resize
-      window.addEventListener("resize", () => {
-        renderer.setSize(100, 100);
-      });
-
-      // Add interaction
-      container.addEventListener("click", () => {
-        expressions.happy(); // Show happy expression when clicked
-        setTimeout(() => expressions.neutral(), 1000); // Return to neutral after 1 second
-      });
-
-      container.addEventListener("mouseover", () => {
-        expressions.happy(); // Show happy expression on hover
-      });
-
-      container.addEventListener("mouseout", () => {
-        expressions.neutral(); // Return to neutral when mouse leaves
-      });
-    </script>
+    <!-- GitHub Repositories -->
     <script>
-      // GitHub Repositories Carousel
       async function fetchGitHubRepos() {
         try {
           const response = await fetch(
-            "https://api.github.com/users/arahulc91/repos"
+            "https://api.github.com/users/arahulc91/repos",
           );
           const repos = await response.json();
-
-          // Sort repos by last updated date
-          const sortedRepos = repos.sort(
-            (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
+          const sorted = repos.sort(
+            (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
           );
-
-          const reposGrid = document.getElementById("repositories-grid");
+          const grid = document.getElementById("repositories-grid");
           let reposPerPage;
 
-          // Determine number of repos per page based on screen size
           function updateReposPerPage() {
-            if (window.innerWidth <= 640) {
-              reposPerPage = 3; // Show 3 on mobile
-            } else if (window.innerWidth <= 1024) {
-              reposPerPage = 4; // Show 4 on tablet
-            } else {
-              reposPerPage = 6; // Show 6 on desktop
-            }
+            if (window.innerWidth <= 640) reposPerPage = 3;
+            else if (window.innerWidth <= 1024) reposPerPage = 4;
+            else reposPerPage = 6;
           }
-
           updateReposPerPage();
           window.addEventListener("resize", () => {
             updateReposPerPage();
@@ -1375,93 +1147,64 @@ class SoftwareEngineer {
           let currentPage = 0;
 
           function createRepoCard(repo) {
-            const description = repo.description || "No description available";
-            const language = repo.language || "Not specified";
+            const desc = repo.description || "No description available";
+            const lang = repo.language || "N/A";
             const stars = repo.stargazers_count;
             const forks = repo.forks_count;
-
             return `
-              <div class="terminal-window p-6 transform hover:scale-105 transition-transform duration-300 repo-card">
-                <div class="repo-card-content">
-                  <h3 class="text-lg font-semibold text-green-400 mb-4">
-                    > ${repo.name}
-                  </h3>
-                  <p class="text-green-400 mb-4 repo-card-description">${description}</p>
-                  <div class="flex flex-wrap items-center gap-4 mb-4">
-                    <span class="text-green-400">
-                      <span class="inline-block w-3 h-3 rounded-full bg-green-400 mr-2"></span>
-                      ${language}
-                    </span>
-                    <span class="text-green-400">★ ${stars}</span>
-                    <span class="text-green-400">⑂ ${forks}</span>
-                  </div>
-                  <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" 
-                     class="inline-flex items-center px-4 py-2 neon-border text-green-400 hover:text-green-300 transition-all duration-300">
-                    > View_Repository()
-                  </a>
+              <div class="glass-card p-6 repo-card flex flex-col" style="transition-duration:0.5s">
+                <h3 class="font-bold text-white mb-3 truncate">${repo.name}</h3>
+                <p class="text-slate-400 text-sm mb-4 flex-grow leading-relaxed">${desc}</p>
+                <div class="flex flex-wrap items-center gap-4 mb-5 text-xs text-slate-500 font-mono">
+                  <span style="display:flex;align-items:center;gap:6px">
+                    <span style="width:8px;height:8px;border-radius:50%;background:#8b5cf6;display:inline-block"></span>
+                    ${lang}
+                  </span>
+                  <span>&#9733; ${stars}</span>
+                  <span>&#9674; ${forks}</span>
                 </div>
+                <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="btn-secondary text-sm self-start">
+                  View Repo &rarr;
+                </a>
               </div>
             `;
           }
 
           function showPage(page) {
             updateReposPerPage();
-            const totalPages = Math.ceil(sortedRepos.length / reposPerPage);
-            page = ((page % totalPages) + totalPages) % totalPages;
+            const total = Math.ceil(sorted.length / reposPerPage);
+            page = ((page % total) + total) % total;
             currentPage = page;
-
-            const startIdx = page * reposPerPage;
-            const endIdx = startIdx + reposPerPage;
-            const pageRepos = sortedRepos.slice(startIdx, endIdx);
-
-            reposGrid.innerHTML = pageRepos.map(createRepoCard).join("");
-
-            // Animate cards
+            const slice = sorted.slice(
+              page * reposPerPage,
+              (page + 1) * reposPerPage,
+            );
+            grid.innerHTML = slice.map(createRepoCard).join("");
             setTimeout(() => {
-              document.querySelectorAll(".repo-card").forEach((card, index) => {
-                setTimeout(() => {
-                  card.classList.add("visible");
-                }, index * 100);
+              grid.querySelectorAll(".repo-card").forEach((card, i) => {
+                setTimeout(() => card.classList.add("visible"), i * 80);
               });
-            }, 50);
+            }, 40);
           }
 
-          // Initialize display
           showPage(0);
 
-          // Navigation buttons
-          const prevButton = document.getElementById("prev-repos");
-          const nextButton = document.getElementById("next-repos");
-
-          prevButton.addEventListener("click", () => {
-            showPage(currentPage - 1);
-          });
-
-          nextButton.addEventListener("click", () => {
-            showPage(currentPage + 1);
-          });
-        } catch (error) {
-          console.error("Error fetching GitHub repos:", error);
-          const reposGrid = document.getElementById("repositories-grid");
-          reposGrid.innerHTML = `
-            <div class="terminal-window p-6 col-span-full">
-              <p class="text-red-500">Error loading repositories. Please try again later.</p>
-            </div>
-          `;
+          document
+            .getElementById("prev-repos")
+            .addEventListener("click", () => showPage(currentPage - 1));
+          document
+            .getElementById("next-repos")
+            .addEventListener("click", () => showPage(currentPage + 1));
+        } catch (err) {
+          console.error("Error fetching repos:", err);
+          document.getElementById("repositories-grid").innerHTML =
+            '<div class="glass-card p-8 col-span-full text-center text-slate-400">Could not load repositories. Please try again later.</div>';
         }
       }
-
-      // Load GitHub repositories when the page loads
       fetchGitHubRepos();
     </script>
-    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-    <script>
-      kofiWidgetOverlay.draw('alvinrahulchauhan', {
-        'type': 'floating-chat',
-        'floating-chat.donateButton.text': 'Support me',
-        'floating-chat.donateButton.background-color': '#5cb85c',
-        'floating-chat.donateButton.text-color': '#fff'
-      });
-    </script>
+
+    <script src="js/hacker-effects.js"></script>
+    <script src="js/funny-messages.js"></script>
   </body>
 </html>
