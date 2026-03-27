@@ -223,14 +223,10 @@ class Chatbot {
     messageDiv.className = `chat-message ${sender}-message ${className}`;
     
     if (className === 'loading-message') {
-      // Create bouncing dots loader
+      // Create thinking indicator with animated dots
       messageDiv.innerHTML = `
         <div class="message-content">
-          <div class="bouncing-loader">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-          </div>
+          <span class="message-text thinking-text">Thinking<span class="thinking-dots">...</span></span>
         </div>
       `;
     } else {

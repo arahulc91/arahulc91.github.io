@@ -103,3 +103,27 @@
     opacity: 0.3;
   }
 }
+
+/* Thinking indicator animation */
+.thinking-text {
+  color: #8b5cf6;
+  font-style: italic;
+}
+
+.thinking-dots {
+  animation: thinkingDots 1.4s infinite;
+}
+
+@keyframes thinkingDots {
+  0%,
+  20% {
+    content: ".";
+  }
+  40% {
+    content: "..";
+  }
+  60%,
+  100% {
+    content: "...";
+  }
+}
