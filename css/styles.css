@@ -1058,20 +1058,30 @@ h3 {
 }
 
 #bot-model-container {
-  width: 100%;
-  height: 100%;
-  transition: transform 0.3s ease;
+  display: none;
 }
 
-#bot-model-container canvas {
-  border: none;
-  outline: none;
+.chatbot-emoji-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  line-height: 1;
+  animation: emojiPulse 2s infinite;
+}
+
+@keyframes emojiPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 16px rgba(139, 92, 246, 0.8));
+  }
 }
 
 @media (max-width: 768px) {
-  .chatbot-toggle {
-    display: flex;
-  }
   .chatbot-container {
     display: none;
   }
