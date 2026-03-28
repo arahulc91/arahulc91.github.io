@@ -1082,6 +1082,10 @@ h3 {
 }
 
 @media (max-width: 768px) {
+  .chatbot-toggle {
+    display: flex;
+  }
+
   .chatbot-container {
     display: none;
   }
