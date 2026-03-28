@@ -1081,8 +1081,13 @@ class SoftwareEngineer {
       // Fetch articles from Dev.to
       async function fetchDevToArticles() {
         try {
-          const response = await fetch('https://dev.to/api/articles?username=arahulc91&per_page=6');
-          const articles = await response.json();
+          // Use CORS proxy to bypass browser CORS restrictions
+          const devtoUrl = 'https://dev.to/api/articles?username=arahulc91&per_page=6';
+          const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(devtoUrl);
+          
+          const response = await fetch(proxyUrl);
+          const data = await response.json();
+          const articles = JSON.parse(data.contents);
           const grid = document.getElementById('blog-grid');
           
           if (!articles || articles.length === 0) {
