@@ -109,6 +109,10 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
             </span>
           </a>
 
+          <div class="md:hidden mobile-section-indicator">
+            <span class="mobile-section-name">Home</span>
+          </div>
+
           <div class="hidden md:flex nav-rail">
             <a href="#about" class="nav-link">About</a>
             <a href="#experience" class="nav-link">Journey</a>
@@ -1027,6 +1031,13 @@ class SoftwareEngineer {
             link.classList.toggle("is-active", isActive);
             if (isActive) {
               link.setAttribute("aria-current", "page");
+              // Update mobile section indicator
+              const mobileIndicator = document.querySelector(
+                ".mobile-section-name",
+              );
+              if (mobileIndicator) {
+                mobileIndicator.textContent = link.textContent.trim();
+              }
             } else {
               link.removeAttribute("aria-current");
             }
