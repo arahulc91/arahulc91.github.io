@@ -48,7 +48,6 @@ Copyright 2025 Alvin Rahul Chauhan. All rights reserved.
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/cat-bot.css" />
     <script src="js/loader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.tailwindcss.com" defer></script>
@@ -624,60 +623,6 @@ class SoftwareEngineer {
         &#x1F334;
       </p>
     </footer>
-
-    <!-- ── Chatbot ─────────────────────────────────────────────── -->
-    <div class="chatbot-toggle">
-      <div id="bot-model-container"></div>
-      <span class="chatbot-emoji-toggle">💬</span>
-    </div>
-    <div class="chatbot-container">
-      <div class="chat-header">
-        <div style="display: flex; align-items: center; gap: 10px">
-          <div
-            style="
-              width: 8px;
-              height: 8px;
-              border-radius: 50%;
-              background: #06b6d4;
-              animation: pulse 2s infinite;
-            "
-          ></div>
-          <span style="font-weight: 600; color: #f1f5f9; font-size: 0.875rem"
-            >AI Assistant</span
-          >
-        </div>
-        <div class="chat-header-buttons">
-          <button class="minimize-chat" title="Minimize">_</button>
-          <button class="maximize-chat" title="Maximize">&#9633;</button>
-          <button class="close-chat" title="Close">&#x2715;</button>
-        </div>
-      </div>
-      <div id="chat-messages" class="chat-messages"></div>
-      <div class="chat-input-container">
-        <form id="chat-form">
-          <input
-            type="text"
-            id="chat-input"
-            placeholder="Ask me anything..."
-            autocomplete="off"
-          />
-          <button type="submit" id="chat-submit">Send</button>
-        </form>
-      </div>
-    </div>
-    <style>
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.3;
-        }
-      }
-    </style>
-
-    <script src="js/chatbot.js"></script>
 
     <!-- Confetti on page load -->
     <script>
